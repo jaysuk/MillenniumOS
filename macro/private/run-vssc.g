@@ -46,7 +46,7 @@ if { var.upperLimit > spindles[global.mosSID].max }
     set var.upperLimit = spindles[global.mosSID].max
     set var.lowerLimit = { spindles[global.mosSID].max - (2*global.mosVSV) }
     if { ! global.mosVSSW }
-        echo {"[VSSC]: Cannot increase spindle speed above " ^ spindles[global.mosSID].max ^ "! VSSC running between " ^ var.lowerLimit ^ " and " ^ var.upperLimit ^"RPM instead!" }
+        echo { "[VSSC]: Cannot increase spindle speed above " ^ spindles[global.mosSID].max ^ "! VSSC running between " ^ var.lowerLimit ^ " and " ^ var.upperLimit ^"RPM instead!" }
         set global.mosVSSW=true
 
 ; Fetch the previously stored base RPM
@@ -56,7 +56,7 @@ var baseRPM = global.mosVSPS
 ; store the RPM as our 'new' base, starting adjustment at the next cycle
 if { var.upperLimit < spindles[global.mosSID].active || spindles[global.mosSID].active < var.lowerLimit }
     if { global.mosDebug }
-        echo {"[VSSC] New base spindle RPM detected: " ^ spindles[global.mosSID].active }
+        echo { "[VSSC] New base spindle RPM detected: " ^ spindles[global.mosSID].active }
     set global.mosVSSW = false
     ; Set the RPM that we're going to adjust over in the next cycle
     set global.mosVSPS = spindles[global.mosSID].active
@@ -76,7 +76,7 @@ else
 
     ; Set adjusted spindle RPM
     if { global.mosDebug }
-        echo {"[VSSC] Adjusted spindle RPM: " ^ var.adjustedSpindleRPM }
+        echo { "[VSSC] Adjusted spindle RPM: " ^ var.adjustedSpindleRPM }
     M568 F{ var.adjustedSpindleRPM }
 
 ; Update adjustment time

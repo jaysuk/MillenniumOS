@@ -22,7 +22,7 @@ if { !move.axes[0].homed || !move.axes[1].homed || !move.axes[2].homed }
 ; tpre _must_ have run to completion before we execute any post-change
 ; operations. If it didn't, we abort this file.
 if { global.mosTCS < 3 }
-    abort { "tpre.g did not run to completion, aborting tpost.g"}
+    abort { "tpre.g did not run to completion, aborting tpost.g" }
 
 set global.mosTCS = 4
 
@@ -37,7 +37,7 @@ if { state.currentTool == global.mosPTID }
     if { global.mosFeatTouchProbe }
         ; We abort the tool change if the touch probe is not detected
         ; so at this point we can safely assume the probe is connected.
-        M291 P{"<b>Touch Probe Detected</b>.<br/>We will now probe the reference surface. Move away from the machine <b>BEFORE</b> pressing <b>OK</b>!"} R"MillenniumOS: Tool Change" S2
+        M291 P{ "<b>Touch Probe Detected</b>.<br/>We will now probe the reference surface. Move away from the machine <b>BEFORE</b> pressing <b>OK</b>!" } R"MillenniumOS: Tool Change" S2
         ; Call reference surface probe in non-standalone mode to
         ; run the actual probe, and force a re-probe if already set
         ; since the probe has been re-installed, the measured distance
@@ -46,7 +46,7 @@ if { state.currentTool == global.mosPTID }
         if { global.mosTSAP == null }
             abort { "Touch probe reference surface probe failed." }
     else
-            M291 P{"<b>Datum Tool Installed</b>.<br/>We will now probe the tool length. Move away from the machine <b>BEFORE</b> pressing <b>OK</b>!"} R"MillenniumOS: Tool Change" S2
+            M291 P{ "<b>Datum Tool Installed</b>.<br/>We will now probe the tool length. Move away from the machine <b>BEFORE</b> pressing <b>OK</b>!" } R"MillenniumOS: Tool Change" S2
 
         ; Probe datum tool length
         G37
@@ -64,6 +64,6 @@ else
 ; on. This way, the only way to avoid both confirmations is to
 ; enable expert mode _and_ disable tutorial mode.
 if { global.mosTM }
-    M291 P{"Tool change complete. Press <b>OK</b> to continue!"} R"MillenniumOS: Tool Change" S2 T0
+    M291 P{ "Tool change complete. Press <b>OK</b> to continue!" } R"MillenniumOS: Tool Change" S2 T0
 
 set global.mosTCS = null

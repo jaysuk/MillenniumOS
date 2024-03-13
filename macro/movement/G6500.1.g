@@ -39,7 +39,7 @@ set global.mosWPCtrPos = { null, null }
 
 ; Make sure probe tool is selected
 if { global.mosPTID != state.currentTool }
-    T T{global.mosPTID}
+    T T{ global.mosPTID }
 
 ; Apply tool radius to overtravel. We want to allow
 ; less movement past the expected point of contact
@@ -50,7 +50,7 @@ if { global.mosPTID != state.currentTool }
 var overtravel = { (exists(param.O) ? param.O : global.mosOT) - ((state.currentTool <= limits.tools-1 && state.currentTool >= 0) ? global.mosTT[state.currentTool][0] : 0) }
 
 ; Commented due to memory limitations
-; M7500 S{"Distance Modifiers adjusted for Tool Radius - Overtravel=" ^ var.overtravel }
+; M7500 S{ "Distance Modifiers adjusted for Tool Radius - Overtravel=" ^ var.overtravel }
 
 ; We add the overtravel to the bore radius to give the user
 ; some leeway. If their estimate of the bore diameter is too
@@ -71,7 +71,7 @@ var sZ   = { param.L }
 ; Angle is in degrees
 var angle = 120
 
-var dirXY = { { var.sX + var.bR, var.sY}, { var.sX + var.bR * cos(radians(var.angle)), var.sY + var.bR * sin(radians(var.angle)) }, { var.sX + var.bR * cos(radians(2 * var.angle)), var.sY + var.bR * sin(radians(2 * var.angle)) } }
+var dirXY = { { var.sX + var.bR, var.sY }, { var.sX + var.bR * cos(radians(var.angle)), var.sY + var.bR * sin(radians(var.angle)) }, { var.sX + var.bR * cos(radians(2 * var.angle)), var.sY + var.bR * sin(radians(2 * var.angle)) } }
 
 ; Bore edge co-ordinates for 3 probed points
 var pXY  = { null, null, null }
@@ -84,7 +84,7 @@ while { iterations < #var.dirXY }
     ; D1 causes the probe macro to not return to the safe position after probing.
     ; Since we're probing multiple times from the same starting point, there's no
     ; need to raise and lower the probe between each probe point.
-    G6512 D1 I{var.probeId} J{var.sX} K{var.sY} L{var.sZ} X{var.dirXY[iterations][0]} Y{var.dirXY[iterations][1]}
+    G6512 D1 I{ var.probeId } J{ var.sX } K{ var.sY } L{ var.sZ } X{ var.dirXY[iterations][0] } Y{ var.dirXY[iterations][1] }
 
     ; Save the probed co-ordinates
     set var.pXY[iterations] = { global.mosPCX, global.mosPCY }
@@ -118,10 +118,10 @@ set global.mosWPCtrPos   = { var.cX, var.cY }
 set global.mosWPRad      = { var.avgR }
 
 ; Move to the calculated center of the bore
-G6550 I{var.probeId} X{var.cX} Y{var.cY}
+G6550 I{ var.probeId } X{ var.cX } Y{ var.cY }
 
 ; Move back to safe Z height
-G6550 I{var.probeId} Z{var.safeZ}
+G6550 I{ var.probeId } Z{ var.safeZ }
 
 if { !exists(param.R) || param.R != 0 }
     if { !global.mosEM }
@@ -132,5 +132,5 @@ if { !exists(param.R) || param.R != 0 }
 
 ; Set WCS origin to the probed corner, if requested
 if { exists(param.W) && param.W != null }
-    echo { "MillenniumOS: Setting WCS " ^ param.W ^ " X,Y origin to center of bore" }
-    G10 L2 P{param.W} X{var.cX} Y{var.cY}
+    echo { "Setting WCS " ^ param.W ^ " X,Y origin to center of bore" }
+    G10 L2 P{ param.W } X{ var.cX } Y{ var.cY }

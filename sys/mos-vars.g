@@ -26,7 +26,7 @@ global mosDebug=false
 
 ; Relative to the operator, where is the corner to be probed?
 ; This is a global because it is used by both G6520 and G6508
-global mosCnr = {"Front Left", "Front Right", "Back Right", "Back Left"}
+global mosCnr = { "Front Left", "Front Right", "Back Right", "Back Left" }
 
 ; Store additional tool information.
 ; Values are: [radius, {deflection-x, deflection-y}]

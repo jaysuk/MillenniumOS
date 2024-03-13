@@ -52,7 +52,7 @@ var tPZ = { (exists(param.Z)? param.Z : move.axes[2].machinePosition) }
 
 if { var.tPX == move.axes[0].machinePosition && var.tPY == move.axes[1].machinePosition && var.tPZ == move.axes[2].machinePosition }
     ; Commented due to memory limitations
-    ; M7500 S{"G6550: Target position is the same as the current position, no move required."}
+    ; M7500 S{ "G6550: Target position is the same as the current position, no move required." }
     M99
 
 ; Check if the positions are within machine limits
@@ -69,12 +69,12 @@ G94
 ; probing travel speed and then return.
 if { var.manualProbe }
     ; Commented due to memory limitations
-    ; M7500 S{"Unprotected move to X=" ^ var.tPX ^ " Y=" ^ var.tPY ^ " Z=" ^ var.tPZ ^ " as touch probe is not available."}
+    ; M7500 S{ "Unprotected move to X=" ^ var.tPX ^ " Y=" ^ var.tPY ^ " Z=" ^ var.tPZ ^ " as touch probe is not available." }
     G53 G1 X{ var.tPX } Y{ var.tPY } Z{ var.tPZ } F{ global.mosMPST }
     M99
 
 ; Commented due to memory limitations
-; M7500 S{"Protected move to X=" ^ var.tPX ^ " Y=" ^ var.tPY ^ " Z=" ^ var.tPZ ^ " from X=" ^ move.axes[0].machinePosition ^ " Y=" ^ move.axes[1].machinePosition ^ " Z=" ^ move.axes[2].machinePosition }
+; M7500 S{ "Protected move to X=" ^ var.tPX ^ " Y=" ^ var.tPY ^ " Z=" ^ var.tPZ ^ " from X=" ^ move.axes[0].machinePosition ^ " Y=" ^ move.axes[1].machinePosition ^ " Z=" ^ move.axes[2].machinePosition }
 
 ; Note: these must be set as variables as we override the
 ; probe speed below. We need to reset the probe speed
@@ -104,12 +104,12 @@ if { sensors.probes[param.I].value[0] != 0 }
     var tIN = { sqrt(pow(var.tDX, 2) + pow(var.tDY, 2) + pow(var.tDZ, 2)) }
 
     ; Commented due to memory limitations
-    ; M7500 S{"Probe is triggered at start position. Must back off until probe deactivates."}
+    ; M7500 S{ "Probe is triggered at start position. Must back off until probe deactivates." }
     ; Commented due to memory limitations
-    ; M7500 S{"Backoff Target position X=" ^ var.tDX ^ " Y=" ^ var.tDY ^ " Z=" ^ var.tDZ ^ " Distance to target: " ^ var.tN ^ " Back-off distance: " ^ var.tIN }
+    ; M7500 S{ "Backoff Target position X=" ^ var.tDX ^ " Y=" ^ var.tDY ^ " Z=" ^ var.tDZ ^ " Distance to target: " ^ var.tN ^ " Back-off distance: " ^ var.tIN }
 
     if { var.tIN >= var.tN }
-        abort {"G6550: Probe is triggered and global.mosPMBO=" ^ global.mosPMBO ^ " is greater than the distance to the target position! You will need to manually move the probe out of harms way!" }
+        abort { "G6550: Probe is triggered and global.mosPMBO=" ^ global.mosPMBO ^ " is greater than the distance to the target position! You will need to manually move the probe out of harms way!" }
 
     ; Back off by the back-off distance
     ; We do not use a G38.5 here because it will stop movement the
@@ -118,17 +118,17 @@ if { sensors.probes[param.I].value[0] != 0 }
     ; because it is still slightly in contact with the surface.
     ; It is better to just move the backoff distance and assume that it
     ; is short enough to not damage the probe.
-    G53 G1 X{ move.axes[0].machinePosition + var.tDX} Y{ move.axes[1].machinePosition + var.tDY } Z{ move.axes[2].machinePosition + var.tDZ } F{ var.roughSpeed }
+    G53 G1 X{ move.axes[0].machinePosition + var.tDX } Y{ move.axes[1].machinePosition + var.tDY } Z{ move.axes[2].machinePosition + var.tDZ } F{ var.roughSpeed }
 
     ; Wait for moves to complete
     M400
 
     ; Commented due to memory limitations
-    ; M7500 S{"Probe back-off deactivated at X=" ^ move.axes[0].machinePosition ^ " Y=" ^ move.axes[1].machinePosition ^ " Z=" ^ move.axes[2].machinePosition }
+    ; M7500 S{ "Probe back-off deactivated at X=" ^ move.axes[0].machinePosition ^ " Y=" ^ move.axes[1].machinePosition ^ " Z=" ^ move.axes[2].machinePosition }
 
     ; Check if probe is still triggered.
     if { sensors.probes[param.I].value[0] != 0 }
-        abort {"G6550: Probe is still triggered after backing off by " ^ global.mosPMBO ^ "mm. You will need to manually move the probe out of harms way!" }
+        abort { "G6550: Probe is still triggered after backing off by " ^ global.mosPMBO ^ "mm. You will need to manually move the probe out of harms way!" }
 
 M558 K{ param.I } F{ sensors.probes[param.I].travelSpeed }
 

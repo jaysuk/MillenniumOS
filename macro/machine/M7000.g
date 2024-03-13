@@ -23,4 +23,4 @@ set global.mosVSEnabled            = true
 set global.mosVSSW = false
 
 if { global.mosDebug }
-    echo {"[VSSC] State: Enabled Period: " ^ param.P ^ "ms Variance: " ^ param.V ^ "RPM" }
+    echo { "[VSSC] State: Enabled Period: " ^ param.P ^ "ms Variance: " ^ param.V ^ "RPM" }

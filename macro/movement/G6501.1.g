@@ -35,7 +35,7 @@ set global.mosWPCtrPos = { null, null }
 
 ; Make sure probe tool is selected
 if { global.mosPTID != state.currentTool }
-    T T{global.mosPTID}
+    T T{ global.mosPTID }
 
 ; Tool Radius is the first entry for each value in
 ; our extended tool table.
@@ -54,7 +54,7 @@ var clearance = { (exists(param.T) ? param.T : global.mosCL) + ((state.currentTo
 var overtravel = { (exists(param.O) ? param.O : global.mosOT) - ((state.currentTool <= limits.tools-1 && state.currentTool >= 0) ? global.mosTT[state.currentTool][0] : 0) }
 
 ; Commented due to memory limitations
-; M7500 S{"Distance Modifiers adjusted for Tool Radius - Clearance=" ^ var.clearance ^ " Overtravel=" ^ var.overtravel }
+; M7500 S{ "Distance Modifiers adjusted for Tool Radius - Clearance=" ^ var.clearance ^ " Overtravel=" ^ var.overtravel }
 
 ; We add the clearance distance to the boss
 ; radius to ensure we move clear of the boss
@@ -74,8 +74,8 @@ var sZ   = { param.L }
 ; Angle is in degrees
 var angle = { radians(120) }
 
-; For each probe point: {start x, start y}, {target x, target y}
-var dirXY = { vector(3, {{null, null}, {null, null}}) }
+; For each probe point: { start x, start y }, { target x, target y }
+var dirXY = { vector(3, { {null, null }, { null, null }}) }
 
 ; The start position is the approximate radius of the boss plus
 ; the clearance at 3 points around the center of the boss, at
@@ -87,7 +87,7 @@ var dirXY = { vector(3, {{null, null}, {null, null}}) }
 
 
 ; Commented due to memory limitations
-; M7500 S{"Boss Radius=" ^ var.cR }
+; M7500 S{ "Boss Radius=" ^ var.cR }
 
 ; Start position probe 1
 set var.dirXY[0][0] = { var.sX + var.cR + var.clearance, var.sY }
@@ -116,10 +116,10 @@ var safeZ = { move.axes[2].machinePosition }
 while { iterations < #var.dirXY }
     ; Perform a probe operation towards the center of the boss
     ; Commented due to memory limitations
-    ; M7500 S{"Starting location X=" ^ var.dirXY[iterations][0][0] ^ " Y=" ^ var.dirXY[iterations][0][1] ^ " Z=" ^ var.sZ }
+    ; M7500 S{ "Starting location X=" ^ var.dirXY[iterations][0][0] ^ " Y=" ^ var.dirXY[iterations][0][1] ^ " Z=" ^ var.sZ }
     ; Commented due to memory limitations
-    ; M7500 S{"Target location X=" ^ var.dirXY[iterations][1][0] ^ " Y=" ^ var.dirXY[iterations][1][1] ^ " Z=" ^ var.sZ }
-    G6512 I{var.probeId} J{var.dirXY[iterations][0][0]} K{var.dirXY[iterations][0][1]} L{var.sZ} X{var.dirXY[iterations][1][0]} Y{var.dirXY[iterations][1][1]}
+    ; M7500 S{ "Target location X=" ^ var.dirXY[iterations][1][0] ^ " Y=" ^ var.dirXY[iterations][1][1] ^ " Z=" ^ var.sZ }
+    G6512 I{ var.probeId } J{ var.dirXY[iterations][0][0] } K{ var.dirXY[iterations][0][1] } L{ var.sZ } X{ var.dirXY[iterations][1][0] } Y{ var.dirXY[iterations][1][1] }
 
     ; Save the probed co-ordinates
     set var.pXY[iterations] = { global.mosPCX, global.mosPCY }
@@ -153,10 +153,10 @@ set global.mosWPCtrPos = { var.cX, var.cY }
 set global.mosWPRad = { var.avgR }
 
 ; Confirm we are at the safe Z height
-G6550 I{var.probeId} Z{var.safeZ}
+G6550 I{ var.probeId } Z{ var.safeZ }
 
 ; Move to the calculated center of the boss
-G6550 I{var.probeId} X{var.cX} Y{var.cY}
+G6550 I{ var.probeId } X{ var.cX } Y{ var.cY }
 
 if { !exists(param.R) || param.R != 0 }
     if { !global.mosEM }
@@ -167,5 +167,5 @@ if { !exists(param.R) || param.R != 0 }
 
 ; Set WCS origin to the probed boss center, if requested
 if { exists(param.W) && param.W != null }
-    echo { "MillenniumOS: Setting WCS " ^ param.W ^ " X,Y origin to center of boss" }
-    G10 L2 P{param.W} X{var.cX} Y{var.cY}
+    echo { "Setting WCS " ^ param.W ^ " X,Y origin to center of boss" }
+    G10 L2 P{ param.W } X{ var.cX } Y{ var.cY }

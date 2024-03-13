@@ -54,8 +54,8 @@ var roughDivider = 5
 if { var.roughSpeed == var.fineSpeed }
     set var.fineSpeed = { var.roughSpeed / var.roughDivider }
     if { !global.mosEM }
-        echo { "MillenniumOS: Probe " ^ param.I ^ " is configured with a single feed rate, which will be used for the initial probe. Subsequent probes will run at " ^ var.fineSpeed ^ "mm/min." }
-        echo { "MillenniumOS: Please use M558 K" ^ param.I ^ " F" ^ var.roughSpeed ^ ":" ^ var.fineSpeed ^ " in your config to silence this warning." }
+        echo { "Probe " ^ param.I ^ " is configured with a single feed rate, which will be used for the initial probe. Subsequent probes will run at " ^ var.fineSpeed ^ "mm/min." }
+        echo { "Please use M558 K" ^ param.I ^ " F" ^ var.roughSpeed ^ ":" ^ var.fineSpeed ^ " in your config to silence this warning." }
 
 ; Set rough probe speed
 M558 K{ param.I } F{ var.roughSpeed }
@@ -92,7 +92,7 @@ while { iterations <= var.retries }
         ; This is a safety precaution to prevent subsequent X/Y moves from
         ; crashing the probe.
         G27 Z1
-        abort { "MillenniumOS: Probe " ^ param.I ^ " experienced an error, aborting!" }
+        abort { "Probe " ^ param.I ^ " experienced an error, aborting!" }
 
     ; Wait for all moves in the queue to finish
     M400
@@ -158,7 +158,7 @@ while { iterations <= var.retries }
     ; the other side of a bore that we just probed).
     ; If the backoff distance is higher than the normal from from the
     ; starting location, then we use the normal as the backoff distance.
-    ; This is essentially the same as multiplying var.d{X,Y,Z} by 1.
+    ; This is essentially the same as multiplying var.d{ X,Y,Z } by 1.
 
     ; Calculate normalized direction and backoff per axis,
     ; and apply to current position.

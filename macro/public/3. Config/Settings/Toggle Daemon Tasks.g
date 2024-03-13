@@ -5,6 +5,6 @@ if { global.mosTM }
     if result == -1
         M99
 
-set global.mosDAE = {!global.mosDAE}
+set global.mosDAE = { !global.mosDAE }
 
-echo {"MillenniumOS: Daemon tasks " ^ (global.mosDAE ? "Enabled" : "Disabled")}
+echo { "Daemon tasks " ^ (global.mosDAE ? "Enabled" : "Disabled") }

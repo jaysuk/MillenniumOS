@@ -10,12 +10,12 @@ if { global.mosTPID == null || global.mosTPRP == null || global.mosTPR == null |
     M291 R"MillenniumOS: Toggle Touch Probe" P"Touch Probe has not been configured. Please configure the touch probe using the Configuration Wizard first." S2
     M99
 
-set global.mosFeatTouchProbe = {!global.mosFeatTouchProbe}
+set global.mosFeatTouchProbe = { !global.mosFeatTouchProbe }
 
 ; Switch probe tool name and configuration when toggling touch probe
 if { global.mosFeatTouchProbe }
-    M4000 P{global.mosPTID} S{"Touch Probe"} R{global.mosTPR}
+    M4000 P{ global.mosPTID } S{ "Touch Probe" } R{ global.mosTPR }
 else
-    M4000 P{global.mosPTID} S{"Datum Tool"} R{global.mosDTR}
+    M4000 P{ global.mosPTID } S{ "Datum Tool" } R{ global.mosDTR }
 
-echo {"MillenniumOS: Touch Probe " ^ (global.mosFeatTouchProbe ? "Enabled" : "Disabled")}
+echo { "Touch Probe " ^ (global.mosFeatTouchProbe ? "Enabled" : "Disabled") }

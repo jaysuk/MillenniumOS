@@ -31,7 +31,7 @@ set global.mosWPCnrPos = { null, null }
 
 ; Make sure probe tool is selected
 if { global.mosPTID != state.currentTool }
-    T T{global.mosPTID}
+    T T{ global.mosPTID }
 
 ; Store our own safe Z position as the current position. We return to
 ; this position where necessary to make moves across the workpiece to
@@ -86,7 +86,7 @@ if { var.clearance >= var.fX || var.clearance >= var.fY }
 ; surface rather.
 
 ; Commented due to memory limitations
-; M7500 S{"Distance Modifiers adjusted for Tool Radius - Clearance=" ^ var.clearance ^ " Overtravel=" ^ var.overtravel }
+; M7500 S{ "Distance Modifiers adjusted for Tool Radius - Clearance=" ^ var.clearance ^ " Overtravel=" ^ var.overtravel }
 
 ; Y start location (K) direction is dependent on the chosen corner.
 ; If this is the front left corner, then our first probe is at
@@ -98,8 +98,8 @@ if { var.clearance >= var.fX || var.clearance >= var.fY }
 ; the Y start location to get the second probe location.
 ; If we add var.fY, then we need to subtract var.clearance and vice
 ; versa.
-; For each probe point: {start x, start y}, {target x, target y}
-var dirXY = { vector(4, {{null, null}, {null, null}}) }
+; For each probe point: { start x, start y }, { target x, target y }
+var dirXY = { vector(4, { {null, null }, { null, null }}) }
 
 ; Assign start and target positions based on direction
 var dirX = { (param.N == 0 || param.N == 3) ? -1 : 1 }
@@ -134,55 +134,55 @@ var pX = { null, null, null, null }
 var pY = { null, null, null, null }
 
 ; Move outside X surface
-G6550 I{var.probeId} X{var.dirXY[0][0][0]}
+G6550 I{ var.probeId } X{ var.dirXY[0][0][0] }
 
 ; Move down to probe position
-G6550 I{var.probeId} Z{var.sZ}
+G6550 I{ var.probeId } Z{ var.sZ }
 
 ; Move to start Y position
-G6550 I{var.probeId} Y{var.dirXY[0][0][1]}
+G6550 I{ var.probeId } Y{ var.dirXY[0][0][1] }
 
 ; Run X probe 1
-G6512 D1 I{var.probeId} J{var.dirXY[0][0][0]} K{var.dirXY[0][0][1]} L{var.sZ} X{var.dirXY[0][1][0]}
+G6512 D1 I{ var.probeId } J{ var.dirXY[0][0][0] } K{ var.dirXY[0][0][1] } L{ var.sZ } X{ var.dirXY[0][1][0] }
 set var.pX[0] = { global.mosPCX }
 set var.pY[0] = { global.mosPCY }
 
 ; Return to our starting position
-G6550 I{var.probeId} X{var.dirXY[0][0][0]}
+G6550 I{ var.probeId } X{ var.dirXY[0][0][0] }
 
-G6512 D1 I{var.probeId} J{var.dirXY[1][0][0]} K{var.dirXY[1][0][1]} L{var.sZ} X{var.dirXY[1][1][0]}
+G6512 D1 I{ var.probeId } J{ var.dirXY[1][0][0] } K{ var.dirXY[1][0][1] } L{ var.sZ } X{ var.dirXY[1][1][0] }
 set var.pX[1] = { global.mosPCX }
 set var.pY[1] = { global.mosPCY }
 
 ; Return to our starting position.
-G6550 I{var.probeId} X{var.dirXY[1][0][0]}
+G6550 I{ var.probeId } X{ var.dirXY[1][0][0] }
 
 ; Move to new start position in Y first
 ; NOTE: Always move in Y first. We probe
 ; X and then Y, if we move in X first then
 ; we will collide with the workpiece when
 ; we switch 'sides'.
-G6550 I{var.probeId} Y{var.dirXY[2][0][1]}
+G6550 I{ var.probeId } Y{ var.dirXY[2][0][1] }
 
 ; And then X
-G6550 I{var.probeId} X{var.dirXY[2][0][0]}
+G6550 I{ var.probeId } X{ var.dirXY[2][0][0] }
 
 ; Run Y probes
-G6512 D1 I{var.probeId} J{var.dirXY[2][0][0]} K{var.dirXY[2][0][1]} L{var.sZ} Y{var.dirXY[2][1][1]}
+G6512 D1 I{ var.probeId } J{ var.dirXY[2][0][0] } K{ var.dirXY[2][0][1] } L{ var.sZ } Y{ var.dirXY[2][1][1] }
 set var.pX[2] = { global.mosPCX }
 set var.pY[2] = { global.mosPCY }
 
 ; Return to our starting position
-G6550 I{var.probeId} Y{var.dirXY[2][0][1]}
+G6550 I{ var.probeId } Y{ var.dirXY[2][0][1] }
 
-G6512 D1 I{var.probeId} J{var.dirXY[3][0][0]} K{var.dirXY[3][0][1]} L{var.sZ} Y{var.dirXY[3][1][1]}
+G6512 D1 I{ var.probeId } J{ var.dirXY[3][0][0] } K{ var.dirXY[3][0][1] } L{ var.sZ } Y{ var.dirXY[3][1][1] }
 set var.pX[3] = { global.mosPCX }
 set var.pY[3] = { global.mosPCY }
 
 ; Return to our starting position and then raise the probe
-G6550 I{var.probeId} Y{var.dirXY[3][0][1]}
+G6550 I{ var.probeId } Y{ var.dirXY[3][0][1] }
 
-G6550 I{var.probeId} Z{var.safeZ}
+G6550 I{ var.probeId } Z{ var.safeZ }
 
 ; Calculate corner position
 ; We need to calculate the lines through the probed points
@@ -219,7 +219,7 @@ var aY = { atan2(var.pY[3] - var.pY[2], var.pX[3] - var.pX[2]) }
 set global.mosWPCnrDeg = { abs(degrees(var.aX - var.aY)) }
 
 ; Move above the corner position
-G6550 I{var.probeId} X{var.cX} Y{var.cY}
+G6550 I{ var.probeId } X{ var.cX } Y{ var.cY }
 
 ; Set corner position
 set global.mosWPCnrPos = { var.cX, var.cY }
@@ -237,5 +237,5 @@ if { !exists(param.R) || param.R != 0 }
 
 ; Set WCS origin to the probed center, if requested
 if { exists(param.W) && param.W != null }
-    echo { "MillenniumOS: Setting WCS " ^ param.W ^ " X,Y origin to corner " ^ global.mosCnr[param.N] }
-    G10 L2 P{param.W} X{global.mosWPCnrPos[0]} Y{global.mosWPCnrPos[1]}
+    echo { "Setting WCS " ^ param.W ^ " X,Y origin to corner " ^ global.mosCnr[param.N] }
+    G10 L2 P{ param.W } X{ global.mosWPCnrPos[0] } Y{ global.mosWPCnrPos[1] }

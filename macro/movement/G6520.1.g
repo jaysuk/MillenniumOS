@@ -38,7 +38,7 @@ var probeId = { global.mosFeatTouchProbe ? global.mosTPID : null }
 
 ; Make sure probe tool is selected
 if { global.mosPTID != state.currentTool }
-    T T{global.mosPTID}
+    T T{ global.mosPTID }
 
 ; Store our own safe Z position as the current position. We return to
 ; this position where necessary to make moves across the workpiece to
@@ -61,12 +61,12 @@ var sZ   = { param.L }
 ; debug info.
 
 ; Probe the top surface of the workpiece from the current Z position
-G6510.1 R0 W{exists(param.W)? param.W : null} H4 I{param.T} O{param.O} J{move.axes[0].machinePosition} K{move.axes[1].machinePosition} L{var.safeZ}
+G6510.1 R0 W{ exists(param.W)? param.W : null } H4 I{ param.T } O{ param.O } J{ move.axes[0].machinePosition } K{ move.axes[1].machinePosition } L{ var.safeZ }
 if { global.mosWPSfcPos == null || global.mosWPSfcAxis != "Z" }
     abort { "G6520: Failed to probe the top surface of the workpiece!" }
 
 ; Probe the corner surface
-G6508.1 R0 W{exists(param.W)? param.W : null} H{param.H} I{param.I} N{param.N} T{param.T} O{param.O} J{move.axes[0].machinePosition} K{move.axes[1].machinePosition} L{ global.mosWPSfcPos - param.P}
+G6508.1 R0 W{ exists(param.W)? param.W : null } H{ param.H } I{ param.I } N{ param.N } T{ param.T } O{ param.O } J{ move.axes[0].machinePosition } K{ move.axes[1].machinePosition } L{ global.mosWPSfcPos - param.P }
 if { global.mosWPCnrNum == null }
     abort { "G6520: Failed to probe the corner surface of the workpiece!" }
 

@@ -29,7 +29,7 @@ G94
 ; a no-op.
 if { !global.mosFeatTouchProbe || !global.mosFeatToolSetter }
     ; Commented due to memory limitations
-    ; M7500 S{"Reference surface probe is not required, touch probe or toolsetter feature is not enabled."}
+    ; M7500 S{ "Reference surface probe is not required, touch probe or toolsetter feature is not enabled." }
     M99
 
 if { global.mosTSAP != null && (!exists(param.R) || param.R == 0) }
@@ -48,7 +48,7 @@ var standalone = { (exists(param.S)) ? (param.S != 0) : true }
 ; reference surface probe.
 if { state.currentTool != global.mosPTID }
     if { var.standalone }
-        T{global.mosPTID}
+        T{ global.mosPTID }
         M99
     else
         abort { "Switching to the touch probe (<b>T" ^ global.mosPTID ^ "</b>) will automatically probe the reference surface if not already probed!" }
@@ -56,10 +56,10 @@ if { state.currentTool != global.mosPTID }
 set global.mosTSAP = null
 
 ; Using the touch probe, probe downwards until the probe is triggered.
-G6512 I{global.mosTPID} J{global.mosTPRP[0]} K{global.mosTPRP[1]} L{move.axes[2].max} Z{move.axes[2].min}
+G6512 I{ global.mosTPID } J{ global.mosTPRP[0] } K{ global.mosTPRP[1] } L{ move.axes[2].max } Z{ move.axes[2].min }
 
 ; Reference surface to toolsetter activation point distance
 set global.mosTSAP = { global.mosPCZ - (global.mosTPRP[2] - global.mosTSP[2]) }
 
-if { !global.mosEM }
-    echo { "MillenniumOS: Probed reference surface Z=" ^ global.mosPCZ ^ ", expected toolsetter activation point is Z=" ^ global.mosTSAP }
+if { global.mosTM }
+    echo { "Probed reference surface Z=" ^ global.mosPCZ ^ ", expected toolsetter activation point is Z=" ^ global.mosTSAP }

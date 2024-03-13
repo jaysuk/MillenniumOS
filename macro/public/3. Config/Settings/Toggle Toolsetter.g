@@ -9,6 +9,6 @@ if { global.mosTSID == null || global.mosTSP == null }
     M291 R"MillenniumOS: Toggle Toolsetter" P"Toolsetter has not been configured. Please configure the toolsetter using the Configuration Wizard first." S2
     M99
 
-set global.mosFeatToolSetter = {!global.mosFeatToolSetter}
+set global.mosFeatToolSetter = { !global.mosFeatToolSetter }
 
-echo {"MillenniumOS: Toolsetter " ^ (global.mosFeatToolSetter ? "Enabled" : "Disabled")}
+echo { "Toolsetter " ^ (global.mosFeatToolSetter ? "Enabled" : "Disabled") }

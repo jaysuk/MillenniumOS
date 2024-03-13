@@ -219,7 +219,7 @@ var yVar = createOutputVariable({ prefix: "Y" }, axesFmt);
 var zVar = createOutputVariable({ prefix: "Z" }, axesFmt); // TODO: Investigate safe retracts using parking location
 
 // Output Feed variable when set
-var fVar = createOutputVariable({ prefix:"F"}, feedFmt);
+var fVar = createOutputVariable({ prefix:"F" }, feedFmt);
 
 // Output I, J and K variables (for arc moves)
 var iVar = createOutputVariable({ prefix: "I", control: CONTROL_NONZERO }, axesFmt);

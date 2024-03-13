@@ -14,10 +14,10 @@ if { spindles[global.mosSID].state == "forward" }
     M568 F{ global.mosVSPS }
 
     if { global.mosDebug }
-        echo {"[VSSC]: State: Disabled RPM: " ^ global.mosVSPS }
+        echo { "[VSSC]: State: Disabled RPM: " ^ global.mosVSPS }
 else
     if { global.mosDebug }
-        echo {"[VSSC]: State: Disabled" }
+        echo { "[VSSC]: State: Disabled" }
 
 ; Update adjustment time, RPM and direction
 set global.mosVSPT = 0

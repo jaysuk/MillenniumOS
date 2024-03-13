@@ -56,7 +56,7 @@ echo { "      global.mosTSAP=" ^ global.mosTSAP }
 echo { "=== MOS Misc:" }
 echo { "      global.mosPMBO=" ^ global.mosPMBO }
 
-echo { "=== MOS Spindle:"}
+echo { "=== MOS Spindle:" }
 echo { "      global.mosSID=" ^ global.mosSID }
 echo { "      global.mosSAS=" ^ global.mosSAS }
 echo { "      global.mosSDS=" ^ global.mosSDS }

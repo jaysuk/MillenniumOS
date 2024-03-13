@@ -9,7 +9,7 @@ if { !exists(global.mosStartupMsgsDisplayed) }
 
 if { !global.mosStartupMsgsDisplayed }
     set global.mosStartupMsgsDisplayed = true
-    if {(!exists(global.mosLdd) || !global.mosLdd)}
+    if { (!exists(global.mosLdd) || !global.mosLdd) }
         ; We can't load MOS without a mos-user-vars.g file so there's no point
         ; reporting an error when we know what it is.
         if { !fileexists("0:/sys/mos-user-vars.g") }

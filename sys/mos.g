@@ -34,7 +34,7 @@ if { !fileexists("0:/sys/mos-user-vars.g") }
 
 ; Delete extraneous example uservars
 if { fileexists("0:/sys/mos-user-vars.g.example") }
-    M472 P{"0:/sys/mos-user-vars.g.example" }
+    M472 P{ "0:/sys/mos-user-vars.g.example" }
 
 ; Install new daemon.g. Daemon file is used to report any startup errors to
 ; the user on boot.

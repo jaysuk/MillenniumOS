@@ -7,6 +7,6 @@ if { global.mosTM }
     if { result == -1 }
         M99
 
-set global.mosVSOE = {!global.mosVSOE}
+set global.mosVSOE = { !global.mosVSOE }
 
-echo {"MillenniumOS: VSSC " ^ (global.mosVSOE ? "Enabled" : "Disabled")}
+echo { "VSSC " ^ (global.mosVSOE ? "Enabled" : "Disabled") }

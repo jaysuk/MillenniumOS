@@ -30,7 +30,7 @@ set global.mosWPSfcAxis = null
 
 ; Make sure probe tool is selected
 if { global.mosPTID != state.currentTool }
-    T T{global.mosPTID}
+    T T{ global.mosPTID }
 
 var safeZ = { move.axes[2].machinePosition }
 
@@ -66,7 +66,7 @@ else
 M6515 X{ var.tPX } Y{ var.tPY } Z{ var.tPZ }
 
 ; Run probing operation
-G6512 I{var.probeId} J{param.J} K{param.K} L{param.L} X{var.tPX} Y{var.tPY} Z{var.tPZ}
+G6512 I{ var.probeId } J{ param.J } K{ param.K } L{ param.L } X{ var.tPX } Y{ var.tPY } Z{ var.tPZ }
 
 var sAxis = { (var.probeAxis <= 1)? "X" : (var.probeAxis <= 3)? "Y" : "Z" }
 
@@ -78,17 +78,17 @@ set global.mosWPSfcPos = { (var.probeAxis <= 1)? global.mosPCX : (var.probeAxis 
 
 if { !exists(param.R) || param.R != 0 }
     if { !global.mosEM }
-        echo { "MillenniumOS: Surface - " ^ var.sAxis ^ "=" ^ global.mosWPSfcPos }
+        echo { "Surface - " ^ var.sAxis ^ "=" ^ global.mosWPSfcPos }
     else
         echo { "global.mosWPSfcAxis=" ^ global.mosWPSfcAxis }
         echo { "global.mosWPSfcPos=" ^ global.mosWPSfcPos }
 
 ; Set WCS if required
 if { exists(param.W) && param.W != null }
-    echo { "MillenniumOS: Setting WCS " ^ param.W ^ " " ^ var.sAxis ^ " origin to probed co-ordinate" }
+    echo { "Setting WCS " ^ param.W ^ " " ^ var.sAxis ^ " origin to probed co-ordinate" }
     if { var.probeAxis <= 1 }
-        G10 L2 P{param.W} X{global.mosWPSfcPos}
+        G10 L2 P{ param.W } X{ global.mosWPSfcPos }
     elif { var.probeAxis <= 3 }
-        G10 L2 P{param.W} Y{global.mosWPSfcPos}
+        G10 L2 P{ param.W } Y{ global.mosWPSfcPos }
     else
-        G10 L2 P{param.W} Z{global.mosWPSfcPos}
+        G10 L2 P{ param.W } Z{ global.mosWPSfcPos }

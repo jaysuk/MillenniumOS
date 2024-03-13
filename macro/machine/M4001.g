@@ -22,10 +22,10 @@ if { #tools < param.P || tools[param.P] == null }
     M99
 
 ; Reset RRF Tool
-M563 P{param.P} R-1 S"Unknown Tool"
+M563 P{ param.P } R-1 S"Unknown Tool"
 
 ; Reset tool description in zero-indexed array
 set global.mosTT[param.P] = { global.mosET }
 
 ; Commented due to memory limitations
-; M7500 S{"Removed tool #" ^ param.P}
+; M7500 S{ "Removed tool #" ^ param.P }

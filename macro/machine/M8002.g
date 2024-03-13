@@ -41,4 +41,4 @@ while { iterations < var.maxIterations }
     set var.previousValue = { sensors.probes[var.probeId].value[0] }
 
 ; Commented due to memory limitations
-; M7500 S{ "MillenniumOS: Probe " ^ var.probeId ^ " not detected after " ^ var.maxWait ^ "s" }
+; M7500 S{ "Probe " ^ var.probeId ^ " not detected after " ^ var.maxWait ^ "s" }

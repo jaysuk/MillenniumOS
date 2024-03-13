@@ -6,6 +6,6 @@ if { !global.mosTM }
     if { result == -1 }
         M99
 
-set global.mosTM = {!global.mosTM}
+set global.mosTM = { !global.mosTM }
 
-echo {"MillenniumOS: Tutorial Mode " ^ (global.mosTM ? "Enabled" : "Disabled")}
+echo { "Tutorial Mode " ^ (global.mosTM ? "Enabled" : "Disabled") }

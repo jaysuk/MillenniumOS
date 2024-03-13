@@ -46,7 +46,7 @@ if { global.mosFeatTouchProbe && global.mosTSAP == null }
 G27 Z1    ; park spindle
 
 if { state.status == "paused" }
-    M291 P{"Cannot run G37 while paused due to safety concerns around resume positions ignoring axis limits."} R"MillenniumOS: Tool Change" S3
+    M291 P{ "Cannot run G37 while paused due to safety concerns around resume positions ignoring axis limits." } R"MillenniumOS: Tool Change" S3
     M99
 
 
@@ -65,12 +65,12 @@ if { state.currentTool == -1 }
     abort { "No tool selected. Run <b>T<N> P0</b> to select a tool before running G37 manually!" }
 
 ; Reset the tool offset before probing
-G10 P{state.currentTool} Z0
+G10 P{ state.currentTool } Z0
 
-echo {"Probing tool #" ^ state.currentTool ^ " length at X=" ^ global.mosTSP[0] ^ ", Y=" ^ global.mosTSP[1] }
+echo { "Probing tool #" ^ state.currentTool ^ " length at X=" ^ global.mosTSP[0] ^ ", Y=" ^ global.mosTSP[1] }
 
 ; Probe towards axis minimum until toolsetter is activated
-G6512 I{global.mosTSID} J{global.mosTSP[0]} K{global.mosTSP[1]} L{move.axes[2].max} Z{move.axes[2].min}
+G6512 I{ global.mosTSID } J{ global.mosTSP[0] } K{ global.mosTSP[1] } L{ move.axes[2].max } Z{ move.axes[2].min }
 
 ; If touch probe is configured, then our position in Z is relative to
 ; the installed height of the touch probe, which we don't know. What we
@@ -88,9 +88,9 @@ if { global.mosFeatTouchProbe }
 else
     set var.toolOffset = { -(abs(global.mosTSP[2]) - abs(global.mosPCZ)) }
 
-echo {"Tool #" ^ state.currentTool ^ " Offset=" ^ var.toolOffset ^ "mm"}
+echo { "Tool #" ^ state.currentTool ^ " Offset=" ^ var.toolOffset ^ "mm" }
 
 ; Park spindle in Z ready for next operation
 G27 Z1
 
-G10 P{state.currentTool} X0 Y0 Z{var.toolOffset}
+G10 P{ state.currentTool } X0 Y0 Z{ var.toolOffset }

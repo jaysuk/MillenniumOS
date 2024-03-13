@@ -8,6 +8,6 @@
 ; Usage: M7500 S"message"
 
 if { global.mosDebug }
-    if { !exists(param.S)}
+    if { !exists(param.S) }
         M99
-    echo {"[DEBUG]: " ^ param.S}
+    echo { "[DEBUG]: " ^ param.S }

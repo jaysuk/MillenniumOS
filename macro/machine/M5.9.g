@@ -33,4 +33,4 @@ var dwellSec = { (exists(param.D) ? param.D : global.mosSDS) }
 if { var.doWait && var.dwellSec > 0 }
     ; Wait for spindle to accelerate
     echo { "Waiting " ^ var.dwellSec ^ " seconds for spindle to stop" }
-    G4 S{var.dwellSec}
+    G4 S{ var.dwellSec }

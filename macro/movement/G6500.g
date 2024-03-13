@@ -27,7 +27,7 @@ if { global.mosTM && !global.mosDD2 }
 
 ; Make sure probe tool is selected
 if { global.mosPTID != state.currentTool }
-    T T{global.mosPTID}
+    T T{ global.mosPTID }
 
 ; Note: These if's below are nested for a reason.
 ; During a print file, sometimes the lines after an M291 are executed
@@ -36,7 +36,7 @@ if { global.mosPTID != state.currentTool }
 ; after the M291 has been acknowledged.
 
 ; Prompt for bore diameter
-M291 P"Please enter approximate bore diameter in mm." R"MillenniumOS: Probe Bore" J1 T0 S6 F{(global.mosWPRad != null) ? global.mosWPRad*2 : 0}
+M291 P"Please enter approximate bore diameter in mm." R"MillenniumOS: Probe Bore" J1 T0 S6 F{ (global.mosWPRad != null) ? global.mosWPRad*2 : 0 }
 if { result != 0 }
     abort { "Bore probe aborted!" }
 
@@ -47,7 +47,7 @@ if { var.boreDiameter < 1 }
 
 
 ; Prompt for overtravel distance
-M291 P"Please enter overtravel distance in mm." R"MillenniumOS: Probe Bore" J1 T0 S6 F{global.mosOT}
+M291 P"Please enter overtravel distance in mm." R"MillenniumOS: Probe Bore" J1 T0 S6 F{ global.mosOT }
 if { result != 0 }
     abort { "Bore probe aborted!" }
 
@@ -59,7 +59,7 @@ M291 P"Please jog the probe <b>OVER</b> the center of the bore and press <b>OK</
 if { result != 0 }
     abort { "Bore probe aborted!" }
 
-M291 P"Please enter the depth to probe at in mm, relative to the current location. A value of 10 will move the probe downwards 10mm before probing outwards." R"MillenniumOS: Probe Bore" J1 T0 S6 F{global.mosOT}
+M291 P"Please enter the depth to probe at in mm, relative to the current location. A value of 10 will move the probe downwards 10mm before probing outwards." R"MillenniumOS: Probe Bore" J1 T0 S6 F{ global.mosOT }
 if { result != 0 }
     abort { "Bore probe aborted!" }
 
@@ -70,8 +70,8 @@ if { var.probingDepth < 0 }
 
 ; Run the bore probe cycle
 if { global.mosTM }
-    M291 P{"Probe will now move downwards " ^ var.probingDepth ^ "mm into the bore and probe towards the edge in 3 directions."} R"MillenniumOS: Probe Bore" J1 T0 S3
+    M291 P{ "Probe will now move downwards " ^ var.probingDepth ^ "mm into the bore and probe towards the edge in 3 directions." } R"MillenniumOS: Probe Bore" J1 T0 S3
     if { result != 0 }
         abort { "Bore probe aborted!" }
 
-G6500.1 W{exists(param.W)? param.W : null} H{var.boreDiameter} O{var.overTravel} J{move.axes[0].machinePosition} K{move.axes[1].machinePosition} L{move.axes[2].machinePosition - var.probingDepth}
+G6500.1 W{ exists(param.W)? param.W : null } H{ var.boreDiameter } O{ var.overTravel } J{ move.axes[0].machinePosition } K{ move.axes[1].machinePosition } L{ move.axes[2].machinePosition - var.probingDepth }

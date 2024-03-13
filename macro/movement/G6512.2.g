@@ -115,14 +115,14 @@ while { true }
     set var.slowSpeedIndex = { var.slowSpeed - (#var.distances - var.vDistC) }
 
     ; Ask operator to select a distance to move towards the target point.
-    M291 P{"Position: X=" ^ var.cP[0] ^ " Y=" ^ var.cP[1] ^ " Z=" ^ var.cP[2] ^ "<br/>Distance to target: " ^ var.dist ^ "mm.<br/>Select distance to move towards target."} R"MillenniumOS: Manual Probe" S4 K{ var.vDistN } D{var.vDistC} T0
+    M291 P{ "Position: X=" ^ var.cP[0] ^ " Y=" ^ var.cP[1] ^ " Z=" ^ var.cP[2] ^ "<br/>Distance to target: " ^ var.dist ^ "mm.<br/>Select distance to move towards target." } R"MillenniumOS: Manual Probe" S4 K{ var.vDistN } D{ var.vDistC } T0
     if { result != 0 || input == (#var.vDistN-1) }
         abort { "Operator cancelled probing!" }
 
     var dI = { input }
 
     ; Commented due to memory limitations
-    ; M7500 S{"Selected distance index: " ^ var.dI}
+    ; M7500 S{ "Selected distance index: " ^ var.dI }
 
     ; Validate selected distance
     if { var.dI < 0 || var.dI >= (#var.vDistN-1) }
@@ -134,12 +134,12 @@ while { true }
     ; Break if operator picks the 'zero' distance.
     if { var.dD == 0 }
         ; Commented due to memory limitations
-    ; M7500 S{"Operator indicated that surface is being touched by tool."}
+    ; M7500 S{ "Operator indicated that surface is being touched by tool." }
         break
 
     if { var.dD == -1 }
         ; Commented due to memory limitations
-    ; M7500 S{"Operator indicated that probe needs to be backed away from the surface."}
+    ; M7500 S{ "Operator indicated that probe needs to be backed away from the surface." }
 
     ; Use a lower movement speed for the smallest increments
     var moveSpeed = { (var.dI >= var.slowSpeedIndex) ? global.mosMPSS : global.mosMPSF }
@@ -150,7 +150,7 @@ while { true }
     var nPZ = { var.cP[2] - ((var.dZ / var.mag) * var.dD) }
 
     ; Move towards (or away from) the target point in increment chosen by operator
-    G53 G1 X{ var.nPX } Y{ var.nPY } Z{ var.nPZ } F{var.moveSpeed}
+    G53 G1 X{ var.nPX } Y{ var.nPY } Z{ var.nPZ } F{ var.moveSpeed }
 
     ; Wait for all moves in the queue to finish
     M400
@@ -164,7 +164,7 @@ set global.mosPCY = { var.cP[1] }
 set global.mosPCZ = { var.cP[2] }
 
 ; Commented due to memory limitations
-; M7500 S{"Probe coordinate: X=" ^ var.cP[0] ^ " Y=" ^ var.cP[1] ^ " Z=" ^ var.cP[2]}
+; M7500 S{ "Probe coordinate: X=" ^ var.cP[0] ^ " Y=" ^ var.cP[1] ^ " Z=" ^ var.cP[2] }
 
 ; Probe variance makes no sense for manual probes that are done once
 set global.mosPVX = 0
@@ -181,7 +181,7 @@ var bN = { sqrt(pow(var.sX - var.cP[0], 2) + pow(var.sY - var.cP[1], 2) + pow(va
 ; the other side of a bore that we just probed).
 ; If the backoff distance is higher than the normal from from the
 ; starting location, then we use the normal as the backoff distance.
-; This is essentially the same as multiplying var.d{X,Y,Z} by 1.
+; This is essentially the same as multiplying var.d{ X,Y,Z } by 1.
 
 ; Calculate normalized direction and backoff per axis,
 ; and apply to current position.

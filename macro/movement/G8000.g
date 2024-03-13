@@ -33,28 +33,28 @@ var wizDatumToolReset = false
 
 M291 P"Welcome to MillenniumOS! This wizard will walk you through the configuration process.<br/>You can run this wizard again using <b>G8000</b> or clicking the <b>""Run Configuration Wizard""</b> macro." R"MillenniumOS: Configuration Wizard" S3 T0
 if { result == -1 }
-    abort { "MillenniumOS: Operator aborted configuration wizard!" }
+    abort { "Operator aborted configuration wizard!" }
 
 if { global.mosTM }
     M291 P"<b>NOTE</b>: No settings will be saved or overwritten until the configuration wizard has been completed." R"MillenniumOS: Configuration Wizard" S2 T0
     M291 P"<b>CAUTION</b>: You can cancel the configuration wizard to finish configuring RRF, but you <b>MUST</b> complete it before trying to use MillenniumOS itself!" R"MillenniumOS: Configuration Wizard" S3 T0
     ; Note we use the shortest HTML tags we can get away with because RRF commands are length limited.
-    M291 P{"<b>CAUTION</b>: You may need to use small, manual movements using this interface during the configuration process. Please make sure the jog button distances are set appropriately before starting!"} R"MillenniumOS: Configuration Wizard" S2 T0
-    M291 P{"<b>CAUTION</b>: Follow <b>ALL</b> instructions to the letter, and if you are unsure about any step, please ask for help on our <a target=""_blank"" href=""https://discord.gg/ya4UUj7ax2"">Discord</a>."} R"MillenniumOS: Configuration Wizard" S2 T0
+    M291 P{ "<b>CAUTION</b>: You may need to use small, manual movements using this interface during the configuration process. Please make sure the jog button distances are set appropriately before starting!" } R"MillenniumOS: Configuration Wizard" S2 T0
+    M291 P{ "<b>CAUTION</b>: Follow <b>ALL</b> instructions to the letter, and if you are unsure about any step, please ask for help on our <a target=""_blank"" href=""https://discord.gg/ya4UUj7ax2"">Discord</a>." } R"MillenniumOS: Configuration Wizard" S2 T0
 
-M291 P"Would you like to enable <b>Tutorial Mode</b>?<br/><b>Tutorial Mode</b> describes configuration and probing actions in detail before any action is taken." R"MillenniumOS: Configuration Wizard" S4 T0 K{"Yes","No"} F0
+M291 P"Would you like to enable <b>Tutorial Mode</b>?<br/><b>Tutorial Mode</b> describes configuration and probing actions in detail before any action is taken." R"MillenniumOS: Configuration Wizard" S4 T0 K{ "Yes","No" } F0
 set var.wizTutorialMode = { (input == 0) ? true : false }
 
-M291 P"Would you like to enable <b>Expert Mode</b>?<br/><b>Expert Mode</b> disables some confirmation checks before and after operations to reduce operator interaction." R"MillenniumOS: Configuration Wizard" S4 T0 K{"Yes","No"} F1
+M291 P"Would you like to enable <b>Expert Mode</b>?<br/><b>Expert Mode</b> disables some confirmation checks before and after operations to reduce operator interaction." R"MillenniumOS: Configuration Wizard" S4 T0 K{ "Yes","No" } F1
 set var.wizExpertMode = { (input == 0) ? true : false }
 
 ; If MOS is loaded, allow the user to reset all settings in one go.
 ; Otherwise, they can choose to reconfigure individual features
 ; below.
 if { global.mosLdd }
-    M291 P"MillenniumOS is already configured. Click <b>Continue</b> to re-configure, change persistent modes or features, or <b>Reset</b> to reset all settings and start again." R"MillenniumOS: Configuration Wizard" S4 T0 K{"Continue","Reset"}
+    M291 P"MillenniumOS is already configured. Click <b>Continue</b> to re-configure, change persistent modes or features, or <b>Reset</b> to reset all settings and start again." R"MillenniumOS: Configuration Wizard" S4 T0 K{ "Continue","Reset" }
 elif { exists(global.mosErr) && global.mosErr != null }
-    M291 P"MillenniumOS could not be loaded due to a startup error.<br/>Click <b>Update</b> to configure any missing settings or <b>Reset</b> to reset all settings and start again." R"MillenniumOS: Configuration Wizard" S4 T0 K{"Update","Reset"}
+    M291 P"MillenniumOS could not be loaded due to a startup error.<br/>Click <b>Update</b> to configure any missing settings or <b>Reset</b> to reset all settings and start again." R"MillenniumOS: Configuration Wizard" S4 T0 K{ "Update","Reset" }
 
 ; Reset if requested
 set var.wizReset = { (input == 1) }
@@ -62,27 +62,27 @@ set var.wizReset = { (input == 1) }
 ; Last chance to abort out of the wizard and configure RRF
 ; without wasting any time answering questions.
 if { global.mosTM }
-    M291 P{"<b>NOTE</b>: You will need to configure a spindle and any optional components (touch probe, toolsetter etc) in <b>RRF</b> before continuing.<br/>Press <b>OK</b> to continue, or <b>Cancel</b> to abort!"} R"MillenniumOS: Configuration Wizard" T0 S3
+    M291 P{ "<b>NOTE</b>: You will need to configure a spindle and any optional components (touch probe, toolsetter etc) in <b>RRF</b> before continuing.<br/>Press <b>OK</b> to continue, or <b>Cancel</b> to abort!" } R"MillenniumOS: Configuration Wizard" T0 S3
     if { result != 0 }
-        abort { "MillenniumOS: Operator aborted configuration wizard!" }
+        abort { "Operator aborted configuration wizard!" }
 
 ; If MOS already loaded and not resetting the whole configuration,
 ; ask if user wants to reconfigure each of the feature sets.
 if { !var.wizReset && global.mosLdd }
-    M291 P{"Would you like to change the <b>Spindle</b> configuration?"} R"MillenniumOS: Configuration Wizard" S4 T0 K{"Yes","No"}
+    M291 P{ "Would you like to change the <b>Spindle</b> configuration?" } R"MillenniumOS: Configuration Wizard" S4 T0 K{ "Yes","No" }
     set var.wizSpindleReset = { (input == 0) }
 
 ; If MOS already loaded, ask if user wants to reconfigure datum tool
 if { !var.wizReset && global.mosLdd }
-    M291 P{"Would you like to change the <b>Datum Tool</b> configuration?"} R"MillenniumOS: Configuration Wizard" S4 T0 K{"Yes","No"}
+    M291 P{ "Would you like to change the <b>Datum Tool</b> configuration?" } R"MillenniumOS: Configuration Wizard" S4 T0 K{ "Yes","No" }
     set var.wizDatumToolReset = { (input == 0) }
 
 if { !var.wizReset && global.mosLdd }
-    M291 P{"Would you like to change the <b>Toolsetter</b> configuration?"} R"MillenniumOS: Configuration Wizard" S4 T0 K{"Yes","No"}
+    M291 P{ "Would you like to change the <b>Toolsetter</b> configuration?" } R"MillenniumOS: Configuration Wizard" S4 T0 K{ "Yes","No" }
     set var.wizToolSetterReset = { (input == 0) }
 
 if { !var.wizReset && global.mosLdd }
-    M291 P{"Would you like to change the <b>Touch Probe</b> configuration?"} R"MillenniumOS: Configuration Wizard" S4 T0 K{"Yes","No"}
+    M291 P{ "Would you like to change the <b>Touch Probe</b> configuration?" } R"MillenniumOS: Configuration Wizard" S4 T0 K{ "Yes","No" }
     set var.wizTouchProbeReset = { (input == 0) }
 
 ; Nullify settings if reset
@@ -112,7 +112,7 @@ if { var.wizSpindleID == null }
         if { spindles[iterations].state == "unconfigured" }
             continue
 
-        M291 P{"Spindle " ^ iterations ^ " is configured (" ^ spindles[iterations].min ^ "-" ^ spindles[iterations].max ^ "RPM).<br/>Use this spindle?"} R"MillenniumOS: Configuration Wizard" S4 T0 K{"Yes","No"} F0
+        M291 P{ "Spindle " ^ iterations ^ " is configured (" ^ spindles[iterations].min ^ "-" ^ spindles[iterations].max ^ "RPM).<br/>Use this spindle?" } R"MillenniumOS: Configuration Wizard" S4 T0 K{ "Yes","No" } F0
         if { input == 0 }
             set var.wizSpindleID = { iterations }
             ; This is necessary because the spindle ID is used to assign tools
@@ -123,11 +123,11 @@ if { var.wizSpindleID == null }
 ; If we don't have a selected spindle at this point, error.
 if { var.wizSpindleID == null }
     M291 P"MillenniumOS: No spindle selected! Please configure a spindle in RRF and try again." R"MillenniumOS: Configuration Wizard" S2 T0
-    abort { "MillenniumOS: No spindle configured!" }
+    abort { "No spindle configured!" }
 
 ; Spindle Feedback Feature Enable / Disable
 if { var.wizFeatureSpindleFeedback == null }
-    M291 P"Would you like to enable the <b>Spindle Feedback</b> feature?" R"MillenniumOS: Configuration Wizard" S4 T0 K{"Yes","No"} F1
+    M291 P"Would you like to enable the <b>Spindle Feedback</b> feature?" R"MillenniumOS: Configuration Wizard" S4 T0 K{ "Yes","No" } F1
     set var.wizFeatureSpindleFeedback = { (input == 0) ? true : false }
 
     ; Do not display this if the setting was not changed
@@ -139,7 +139,7 @@ if { var.wizFeatureSpindleFeedback == null }
 if { var.wizSpindleAccelSec == null || var.wizSpindleDecelSec == null }
     M291 P"We need to start the spindle and accelerate to its maximum RPM, to measure how long it takes.<br/><b>CAUTION</b>: Remove any tool and make sure your spindle nut is tightened before proceeding!" R"MillenniumOS: Configuration Wizard" S3 T0
     if { result != 0 }
-        abort { "MillenniumOS: Operator aborted configuration wizard!" }
+        abort { "Operator aborted configuration wizard!" }
 
     M291 P"When ready, click <b>OK</b> to start the spindle.<br />When it is no longer accelerating, click <b>OK</b> on the next screen." R"MillenniumOS: Configuration Wizard" S2 T0
 
@@ -147,7 +147,7 @@ if { var.wizSpindleAccelSec == null || var.wizSpindleDecelSec == null }
     set var.wizSpindleAccelSec = { state.time }
 
     ; Run spindle up to maximum RPM
-    M3 P{var.wizSpindleID} S{spindles[var.wizSpindleID].max}
+    M3 P{ var.wizSpindleID } S{ spindles[var.wizSpindleID].max }
 
     ; Prompt user to click OK when the spindle has stopped accelerating
     M291 P"Click <b>OK</b> when the spindle has finished accelerating!" R"MillenniumOS: Configuration Wizard" S2 T0
@@ -162,7 +162,7 @@ if { var.wizSpindleAccelSec == null || var.wizSpindleDecelSec == null }
     set var.wizSpindleDecelSec = { state.time }
 
     ; Stop spindle
-    M5 P{var.wizSpindleID}
+    M5 P{ var.wizSpindleID }
 
     ; Prompt user to click OK when the spindle has stopped decelerating
     M291 P"Click <b>OK</b> when the spindle has stopped!" R"MillenniumOS: Configuration Wizard" S2 T0
@@ -174,26 +174,26 @@ if { var.wizSpindleAccelSec == null || var.wizSpindleDecelSec == null }
     ; throw an error.
     ; No normal working spindle should take >120s to accelerate or decelerate.
     if { var.wizSpindleAccelSec > 120 || var.wizSpindleDecelSec > 120 }
-        abort { "MillenniumOS: Calculated spindle acceleration or deceleration time is too long!" }
+        abort { "Calculated spindle acceleration or deceleration time is too long!" }
 
 if { var.wizDatumToolRadius == null }
     if { var.wizTutorialMode }
-        M291 P{"We now need to choose a <b>datum tool</b>, which can be a metal dowel, a gauge pin or flat tipped endmill."} R"MillenniumOS: Configuration Wizard" S2 T0
-        M291 P{"You will be asked to install this tool in the spindle when necessary for manual probes."} R"MillenniumOS: Configuration Wizard" S2 T0:W
-        M291 P{"With the Touch Probe feature <b>disabled</b>, the <b>datum tool</b> can be used to probe workpieces and calculate tool offsets."} R"MillenniumOS: Configuration Wizard" S2 T0
-        M291 P{"With the Touch Probe feature <b>enabled</b>, the <b>datum tool</b> will be used to take initial measurements that the touch probe requires to calculate offsets correctly."} R"MillenniumOS: Configuration Wizard" S2 T0
-        M291 P{"<b>CAUTION</b>: Once the <b>datum tool</b> has been configured, you <b>MUST</b> use the same tool when probing workpieces manually or the results will not be accurate!"} R"MillenniumOS: Configuration Wizard" S2 T0
-    M291 P{"Please enter the <b>radius</b> of your chosen <b>datum tool</b>, in mm. You should measure the diameter with calipers or a micrometer and divide by 2."} R"MillenniumOS: Configuration Wizard" S6 L0.5 H5 F3.0
+        M291 P{ "We now need to choose a <b>datum tool</b>, which can be a metal dowel, a gauge pin or flat tipped endmill." } R"MillenniumOS: Configuration Wizard" S2 T0
+        M291 P{ "You will be asked to install this tool in the spindle when necessary for manual probes." } R"MillenniumOS: Configuration Wizard" S2 T0:W
+        M291 P{ "With the Touch Probe feature <b>disabled</b>, the <b>datum tool</b> can be used to probe workpieces and calculate tool offsets." } R"MillenniumOS: Configuration Wizard" S2 T0
+        M291 P{ "With the Touch Probe feature <b>enabled</b>, the <b>datum tool</b> will be used to take initial measurements that the touch probe requires to calculate offsets correctly." } R"MillenniumOS: Configuration Wizard" S2 T0
+        M291 P{ "<b>CAUTION</b>: Once the <b>datum tool</b> has been configured, you <b>MUST</b> use the same tool when probing workpieces manually or the results will not be accurate!" } R"MillenniumOS: Configuration Wizard" S2 T0
+    M291 P{ "Please enter the <b>radius</b> of your chosen <b>datum tool</b>, in mm. You should measure the diameter with calipers or a micrometer and divide by 2." } R"MillenniumOS: Configuration Wizard" S6 L0.5 H5 F3.0
     set var.wizDatumToolRadius = { input }
 
 ; Toolsetter Feature Enable / Disable
 if { var.wizFeatureToolSetter == null }
-    M291 P"Would you like to enable the <b>Toolsetter</b> feature?" R"MillenniumOS: Configuration Wizard" S4 T0 K{"Yes","No"} F0
+    M291 P"Would you like to enable the <b>Toolsetter</b> feature?" R"MillenniumOS: Configuration Wizard" S4 T0 K{ "Yes","No" } F0
     set var.wizFeatureToolSetter = { (input == 0) ? true : false }
 
 ; Touch Probe Feature Enable / Disable
 if { var.wizFeatureTouchProbe == null }
-    M291 P"Would you like to enable the <b>Touch Probe</b> feature?" R"MillenniumOS: Configuration Wizard" S4 T0 K{"Yes","No"} F1
+    M291 P"Would you like to enable the <b>Touch Probe</b> feature?" R"MillenniumOS: Configuration Wizard" S4 T0 K{ "Yes","No" } F1
     set var.wizFeatureTouchProbe = { (input == 0) ? true : false }
 
 ; We configure the toolsetter first. We configure the touch probe reference surface
@@ -202,8 +202,8 @@ if { var.wizFeatureTouchProbe == null }
 
 if { (var.wizFeatureToolSetter || var.wizFeatureTouchProbe) && var.wizProtectedMoveBackOff == null }
     if { var.wizTutorialMode }
-        M291 P{"We now need to enter a <b>back-off distance</b> for protected moves.<br/>This is the distance we will initially move when a touch probe or toolsetter is activated, to deactivate it."} R"MillenniumOS: Configuration Wizard" S2 T0
-    M291 P{"Please enter the back-off distance for protected moves."} R"MillenniumOS: Configuration Wizard" S6 L0.1 H5 F0.5
+        M291 P{ "We now need to enter a <b>back-off distance</b> for protected moves.<br/>This is the distance we will initially move when a touch probe or toolsetter is activated, to deactivate it." } R"MillenniumOS: Configuration Wizard" S2 T0
+    M291 P{ "Please enter the back-off distance for protected moves." } R"MillenniumOS: Configuration Wizard" S6 L0.1 H5 F0.5
     set var.wizProtectedMoveBackOff = { input }
     set global.mosPMBO = var.wizProtectedMoveBackOff
 
@@ -212,18 +212,18 @@ if { var.wizFeatureToolSetter }
     if { var.wizToolSetterID == null }
         M291 P"We now need to detect your toolsetter.<br/><b>CAUTION</b>: Make sure it is connected to the machine.<br/>When ready, press <b>OK</b>, and then manually activate your toolsetter until it is detected." R"MillenniumOS: Configuration Wizard" S2 T0
 
-        echo { "Waiting for toolsetter activation... "}
+        echo { "Waiting for toolsetter activation... " }
 
         ; Wait for a 100ms activation of any probe for a maximum of 30s
         M8001 D100 W30
 
         if { global.mosDPID == null }
             M291 P"MillenniumOS: Toolsetter not detected! Please make sure your toolsetter is configured correctly in RRF." R"MillenniumOS: Configuration Wizard" S2 T0
-            abort { "MillenniumOS: Toolsetter not detected!" }
+            abort { "Toolsetter not detected!" }
 
         set var.wizToolSetterID = global.mosDPID
 
-        M291 P{"Toolsetter detected with ID " ^ var.wizToolSetterID ^ "!"} R"MillenniumOS: Configuration Wizard" S2 T0
+        M291 P{ "Toolsetter detected with ID " ^ var.wizToolSetterID ^ "!" } R"MillenniumOS: Configuration Wizard" S2 T0
 
     var needsToolSetterPos = { var.wizFeatureToolSetter && var.wizToolSetterPos == null }
 
@@ -234,45 +234,45 @@ if { var.wizFeatureToolSetter }
     var needsMeasuring = { var.needsToolSetterPos || var.needsRefMeasure }
 
     if { var.needsMeasuring && (!move.axes[0].homed || !move.axes[1].homed || !move.axes[2].homed) }
-        M291 P{"One or more axes are not homed.<br/>Press <b>OK</b> to home the machine and continue."} R"MillenniumOS: Configuration Wizard" S3 T0
+        M291 P{ "One or more axes are not homed.<br/>Press <b>OK</b> to home the machine and continue." } R"MillenniumOS: Configuration Wizard" S3 T0
         if { result != 0 }
-            abort { "MillenniumOS: Operator aborted machine homing!" }
+            abort { "Operator aborted machine homing!" }
         G28
 
     if { var.needsMeasuring }
         ; Prompt the user to install a datum tool for the initial probe.
-        M291 P{"Please install your <b>datum tool</b> into the spindle with 15-20mm of stickout.<br/><b>CAUTION</b>: Do not remove or adjust it until prompted!"} R"MillenniumOS: Configuration Wizard" S2 T0
+        M291 P{ "Please install your <b>datum tool</b> into the spindle with 15-20mm of stickout.<br/><b>CAUTION</b>: Do not remove or adjust it until prompted!" } R"MillenniumOS: Configuration Wizard" S2 T0
 
         ; Remove any existing probe tool so
         ; it can be redefined.
-        M4001 P{global.mosPTID}
+        M4001 P{ global.mosPTID }
 
         ; Add a wizard datum tool using the provided radius
         ; Use a temporary spindle ID for the wizard spindle
-        M4000 S{"Wizard Datum Tool"} P{global.mosPTID} R{ var.wizDatumToolRadius } I{var.wizSpindleID}
+        M4000 S{ "Wizard Datum Tool" } P{ global.mosPTID } R{ var.wizDatumToolRadius } I{ var.wizSpindleID }
 
         ; Switch to the datum tool but don't run any macros
         ; as we already know the datum tool is installed.
-        T{global.mosPTID} P0
+        T{ global.mosPTID } P0
 
 
     if { var.needsToolSetterPos }
-        M291 P{"Now we need to calibrate the toolsetter position.<br/>Please jog the <b>datum tool</b> less than 10mm over the center of the toolsetter - but <b>NOT</b> touching it - and press <b>OK</b>."} R"MillenniumOS: Configuration Wizard" X1 Y1 Z1 S3
+        M291 P{ "Now we need to calibrate the toolsetter position.<br/>Please jog the <b>datum tool</b> less than 10mm over the center of the toolsetter - but <b>NOT</b> touching it - and press <b>OK</b>." } R"MillenniumOS: Configuration Wizard" X1 Y1 Z1 S3
         if { result != 0 }
-            abort { "MillenniumOS: Operator aborted toolsetter calibration!" }
+            abort { "Operator aborted toolsetter calibration!" }
 
         ; Save X and Y position, Z is probed in the next step
         set var.wizToolSetterPos = { move.axes[0].machinePosition, move.axes[1].machinePosition, null }
 
-        M291 P{"Toolsetter position is X: " ^ var.wizToolSetterPos[0] ^ " Y: " ^ var.wizToolSetterPos[1] ^ ".<br/>If this is correct, press <b>OK</b> to probe the toolsetter height."} R"MillenniumOS: Configuration Wizard" S3
+        M291 P{ "Toolsetter position is X: " ^ var.wizToolSetterPos[0] ^ " Y: " ^ var.wizToolSetterPos[1] ^ ".<br/>If this is correct, press <b>OK</b> to probe the toolsetter height." } R"MillenniumOS: Configuration Wizard" S3
         if { result != 0 }
-            abort { "MillenniumOS: Operator aborted toolsetter calibration!" }
+            abort { "Operator aborted toolsetter calibration!" }
 
         ; Probe the toolsetter height
-        G6512 I{var.wizToolSetterID} L{move.axes[2].machinePosition} Z{move.axes[2].machinePosition - 10}
+        G6512 I{ var.wizToolSetterID } L{ move.axes[2].machinePosition } Z{ move.axes[2].machinePosition - 10 }
         if { result != 0 }
             M291 P"MillenniumOS: Toolsetter probe failed!" R"MillenniumOS: Configuration Wizard" S2 T0
-            abort { "MillenniumOS: Toolsetter probe failed!" }
+            abort { "Toolsetter probe failed!" }
 
         set var.wizToolSetterPos[2] = { global.mosPCZ }
 
@@ -283,28 +283,28 @@ if { var.wizFeatureToolSetter }
 
             M291 P"We now need to measure the distance between the toolsetter activation point and your reference surface using the <b>datum tool</b> to touch the reference surface and record a position." R"MillenniumOS: Configuration Wizard" S3 T0
             if { result != 0 }
-                abort { "MillenniumOS: Operator aborted touch probe calibration!" }
+                abort { "Operator aborted touch probe calibration!" }
 
             M291 P"<b>CAUTION</b>: The spindle can apply a lot of force to the table or fixture plate and it is easy to cause damage.<br/>Approach the surface <b>CAREFULLY</b> in steps of 0.1mm or lower when close." R"MillenniumOS: Configuration Wizard" S2 T0
 
         ; Disable the touch probe feature temporarily so we force a manual probe.
         set global.mosFeatTouchProbe = false
 
-        M291 P{"Please jog the <b>datum tool</b> just less than 20mm over the reference surface, but not touching, then press <b>OK</b>."} R"MillenniumOS: Configuration Wizard" X1 Y1 Z1 S3
+        M291 P{ "Please jog the <b>datum tool</b> just less than 20mm over the reference surface, but not touching, then press <b>OK</b>." } R"MillenniumOS: Configuration Wizard" X1 Y1 Z1 S3
         if { result != 0 }
-            abort { "MillenniumOS: Operator aborted touch probe calibration!" }
+            abort { "Operator aborted touch probe calibration!" }
 
         ; Store the reference surface position in X and Y
         set var.wizTouchProbeReferencePos = { move.axes[0].machinePosition, move.axes[1].machinePosition, 0 }
 
         if { var.wizTutorialMode }
-            M291 P{"Using the following probing interface, please move the <b>datum tool</b> until it is just touching the reference surface, then press <b>Finish</b>."} R"MillenniumOS: Configuration Wizard" S2 T0
+            M291 P{ "Using the following probing interface, please move the <b>datum tool</b> until it is just touching the reference surface, then press <b>Finish</b>." } R"MillenniumOS: Configuration Wizard" S2 T0
 
         ; Distance to move towards target is the lower of (min Z - current Z) or 20mm.
-        G6510.1 R0 W{null} H4 I{min(abs(move.axes[2].min - move.axes[2].machinePosition), 20)} O0 J{move.axes[0].machinePosition} K{move.axes[1].machinePosition} L{move.axes[2].machinePosition}
+        G6510.1 R0 W{ null } H4 I{ min(abs(move.axes[2].min - move.axes[2].machinePosition), 20) } O0 J{ move.axes[0].machinePosition } K{ move.axes[1].machinePosition } L{ move.axes[2].machinePosition }
 
         if { global.mosWPSfcPos == null || global.mosWPSfcAxis != "Z" }
-            abort { "MillenniumOS: Failed to probe the reference surface!" }
+            abort { "Failed to probe the reference surface!" }
 
         ; Store the reference surface position in Z
         set var.wizTouchProbeReferencePos[2] = { global.mosWPSfcPos }
@@ -317,9 +317,9 @@ if { var.wizFeatureToolSetter }
         G27 Z1
 
         ; Remove the temporary datum tool.
-        M4001 P{global.mosPTID}
+        M4001 P{ global.mosPTID }
 
-        M291 P{"You may now remove the <b>datum tool</b> from the spindle."} R"MillenniumOS: Configuration Wizard" S2 T0
+        M291 P{ "You may now remove the <b>datum tool</b> from the spindle." } R"MillenniumOS: Configuration Wizard" S2 T0
 
 
 ; Touch Probe ID Detection and deflection calibration.
@@ -329,65 +329,65 @@ if { var.wizFeatureToolSetter }
 if { var.wizFeatureTouchProbe && (var.wizTouchProbeID == null || var.wizTouchProbeDeflection == null || var.wizTouchProbeRadius == null) }
     M291 P"We now need to detect your touch probe.<br/><b>CAUTION</b>: Please connect and install the probe.<br/>When ready, press <b>OK</b>, and then manually activate your touch probe until it is detected." R"MillenniumOS: Configuration Wizard" S2 T0
 
-    echo { "Waiting for touch probe activation... "}
+    echo { "Waiting for touch probe activation... " }
 
     ; Wait for a 100ms activation of any probe for a maximum of 30s
     M8001 D100 W30
 
     if { global.mosDPID == null }
         M291 P"MillenniumOS: Touch probe not detected! Please make sure your probe is configured correctly in RRF." R"MillenniumOS: Configuration Wizard" S2 T0
-        abort { "MillenniumOS: Touch probe not detected!" }
+        abort { "Touch probe not detected!" }
 
     set var.wizTouchProbeID    = global.mosDPID
     set global.mosTPID = var.wizTouchProbeID
 
     if { var.wizTutorialMode }
-        M291 P{"Touch probe detected with ID " ^ var.wizTouchProbeID ^ "!"} R"MillenniumOS: Configuration Wizard" S2 T0
+        M291 P{ "Touch probe detected with ID " ^ var.wizTouchProbeID ^ "!" } R"MillenniumOS: Configuration Wizard" S2 T0
 
     if { var.wizTouchProbeRadius == null }
         ; Ask the operator to measure and enter the touch probe radius.
-        M291 P{"Please enter the radius of the touch probe tip. You should measure the diameter with calipers or a micrometer and divide by 2."} R"MillenniumOS: Configuration Wizard" S6 L0.1 H5 F1.0
+        M291 P{ "Please enter the radius of the touch probe tip. You should measure the diameter with calipers or a micrometer and divide by 2." } R"MillenniumOS: Configuration Wizard" S6 L0.1 H5 F1.0
         set var.wizTouchProbeRadius = { input }
 
     if { var.wizTutorialMode }
         ; Probe a rectangular block to calculate the deflection if the touch probe is enabled
-        M291 P{"We now need to measure the deflection of the touch probe. We will do this by probing a <b>1-2-3 block</b> or other rectangular item of <b>accurate and known dimensions</b> (greater than 10mm per side)."} R"MillenniumOS: Configuration Wizard" S2 T0
+        M291 P{ "We now need to measure the deflection of the touch probe. We will do this by probing a <b>1-2-3 block</b> or other rectangular item of <b>accurate and known dimensions</b> (greater than 10mm per side)." } R"MillenniumOS: Configuration Wizard" S2 T0
 
     if { (!move.axes[0].homed || !move.axes[1].homed || !move.axes[2].homed) }
-        M291 P{"One or more axes are not homed.<br/>Press <b>OK</b> to home the machine and continue."} R"MillenniumOS: Configuration Wizard" S3 T0
+        M291 P{ "One or more axes are not homed.<br/>Press <b>OK</b> to home the machine and continue." } R"MillenniumOS: Configuration Wizard" S3 T0
         if { result != 0 }
-            abort { "MillenniumOS: Operator aborted machine homing!" }
+            abort { "Operator aborted machine homing!" }
         G28
 
-    M291 P{"We will now move the table to the front of the machine.<br/><b>CAUTION</b>: Please move away from the machine, and remove any obstructions around the table <b>BEFORE</b> clicking <b>OK</b>."} R"MillenniumOS: Configuration Wizard" S3 T0
+    M291 P{ "We will now move the table to the front of the machine.<br/><b>CAUTION</b>: Please move away from the machine, and remove any obstructions around the table <b>BEFORE</b> clicking <b>OK</b>." } R"MillenniumOS: Configuration Wizard" S3 T0
 
     ; Park centrally to enable the 1-2-3 block installation
     G27
 
-    M291 P{"Please secure your 1-2-3 block or chosen rectangular item onto the table, largest face on top.<br/><b>CAUTION</b>: Please make sure all 4 side surfaces are free of obstructions!"} R"MillenniumOS: Configuration Wizard" S2 T0
-    M291 P{"Please enter the exact <b>surface length</b> of the rectangular item along the X axis in mm.<br/><b>NOTE</b>: Along the X axis means the surface facing towards the operator."} R"MillenniumOS: Configuration Wizard" J1 T0 S6 F50.8
+    M291 P{ "Please secure your 1-2-3 block or chosen rectangular item onto the table, largest face on top.<br/><b>CAUTION</b>: Please make sure all 4 side surfaces are free of obstructions!" } R"MillenniumOS: Configuration Wizard" S2 T0
+    M291 P{ "Please enter the exact <b>surface length</b> of the rectangular item along the X axis in mm.<br/><b>NOTE</b>: Along the X axis means the surface facing towards the operator." } R"MillenniumOS: Configuration Wizard" J1 T0 S6 F50.8
     if { result != 0 }
-        abort { "MillenniumOS: Operator aborted configuration wizard!" }
+        abort { "Operator aborted configuration wizard!" }
 
     var measuredX = { input }
 
     if { var.measuredX < 10 }
-        abort { "MillenniumOS: Measured X length is too short, must be at least 10mm!" }
+        abort { "Measured X length is too short, must be at least 10mm!" }
 
-    M291 P{"Please enter the exact <b>surface length</b> of the rectangular item along the Y axis in mm.<br/><b>NOTE</b>: Along the Y axis means the surface facing to the left or right."} R"MillenniumOS: Configuration Wizard" J1 T0 S6 F76.2
+    M291 P{ "Please enter the exact <b>surface length</b> of the rectangular item along the Y axis in mm.<br/><b>NOTE</b>: Along the Y axis means the surface facing to the left or right." } R"MillenniumOS: Configuration Wizard" J1 T0 S6 F76.2
     if { result != 0 }
-        abort { "MillenniumOS: Operator aborted configuration wizard!" }
+        abort { "Operator aborted configuration wizard!" }
 
     var measuredY = { input }
 
     if { var.measuredY < 10 }
-        abort { "MillenniumOS: Measured Y length is too short, must be at least 10mm!" }
+        abort { "Measured Y length is too short, must be at least 10mm!" }
 
-    M291 P{"Jog the touch probe within 5mm of the center of the item and press <b>OK</b>.<br/><b>CAUTION</b>: The probe height when clicking <b>OK</b> is assumed to be safe for horizontal moves!"} R"MillenniumOS: Configuration Wizard" X1 Y1 Z1 S3 T0
+    M291 P{ "Jog the touch probe within 5mm of the center of the item and press <b>OK</b>.<br/><b>CAUTION</b>: The probe height when clicking <b>OK</b> is assumed to be safe for horizontal moves!" } R"MillenniumOS: Configuration Wizard" X1 Y1 Z1 S3 T0
 
-    M291 P"Please enter the depth to probe at in mm, relative to the current location. A value of 10 will move the probe downwards 10mm before probing towards the item." R"MillenniumOS: Configuration Wizard" J1 T0 S6 F{global.mosOT}
+    M291 P"Please enter the depth to probe at in mm, relative to the current location. A value of 10 will move the probe downwards 10mm before probing towards the item." R"MillenniumOS: Configuration Wizard" J1 T0 S6 F{ global.mosOT }
     if { result != 0 }
-        abort { "MillenniumOS: Operator aborted configuration wizard!" }
+        abort { "Operator aborted configuration wizard!" }
 
     var probingDepth = { input }
 
@@ -395,9 +395,9 @@ if { var.wizFeatureTouchProbe && (var.wizTouchProbeID == null || var.wizTouchPro
         abort { "Probing depth must not be negative!" }
 
     if { var.wizTutorialMode }
-        M291 P{"We will now probe the item from 15mm outside each surface, at 2 points along each surface, at a depth of " ^ var.probingDepth ^ "mm.<br/>Press <b>OK</b> to proceed!"} R"MillenniumOS: Configuration Wizard" S3 T0
+        M291 P{ "We will now probe the item from 15mm outside each surface, at 2 points along each surface, at a depth of " ^ var.probingDepth ^ "mm.<br/>Press <b>OK</b> to proceed!" } R"MillenniumOS: Configuration Wizard" S3 T0
         if { result != 0 }
-            abort { "MillenniumOS: Operator aborted configuration wizard!" }
+            abort { "Operator aborted configuration wizard!" }
 
     ; Enable the feature temporarily so we can use the touch probe later.
     set global.mosFeatTouchProbe = var.wizFeatureTouchProbe
@@ -408,27 +408,27 @@ if { var.wizFeatureTouchProbe && (var.wizTouchProbeID == null || var.wizTouchPro
 
     ; Remove any existing probe tool so
     ; it can be redefined.
-    M4001 P{global.mosPTID}
+    M4001 P{ global.mosPTID }
 
     ; Add a wizard touch probe using the provided radius
     ; Use a temporary spindle ID for the wizard spindle
-    M4000 S{"Wizard Touch Probe"} P{global.mosPTID} R{ var.wizTouchProbeRadius } I{var.wizSpindleID}
+    M4000 S{ "Wizard Touch Probe" } P{ global.mosPTID } R{ var.wizTouchProbeRadius } I{ var.wizSpindleID }
 
     ; Switch to the probe tool.
-    T{global.mosPTID} P0
+    T{ global.mosPTID } P0
 
-    G6503.1 W{null} H{var.measuredX} I{var.measuredY} T15 O5 J{move.axes[0].machinePosition} K{move.axes[1].machinePosition} L{move.axes[2].machinePosition - var.probingDepth}
+    G6503.1 W{ null } H{ var.measuredX } I{ var.measuredY } T15 O5 J{ move.axes[0].machinePosition } K{ move.axes[1].machinePosition } L{ move.axes[2].machinePosition - var.probingDepth }
     ; Reset after probing so we don't override wizard
     ; settings if it needs to run again.
     set global.mosFeatTouchProbe = null
 
     if { global.mosWPDims[0] == null || global.mosWPDims[1] == null }
         T-1 P0
-        M4001 P{global.mosPTID}
-        abort { "MillenniumOS: Rectangular block probing failed!" }
+        M4001 P{ global.mosPTID }
+        abort { "Rectangular block probing failed!" }
 
     if { global.mosTM }
-        M291 P{"Measured block dimensions are <b>X=" ^ global.mosWPDims[0] ^ " Y=" ^ global.mosWPDims[1] ^ "</b>.<br/>Current probe location is over the center of the item."} R"MillenniumOS: Configuration Wizard" S2 T0
+        M291 P{ "Measured block dimensions are <b>X=" ^ global.mosWPDims[0] ^ " Y=" ^ global.mosWPDims[1] ^ "</b>.<br/>Current probe location is over the center of the item." } R"MillenniumOS: Configuration Wizard" S2 T0
 
     var deflectionX = { (var.measuredX - global.mosWPDims[0])/2 }
     var deflectionY = { (var.measuredY - global.mosWPDims[1])/2 }
@@ -447,7 +447,7 @@ if { var.wizFeatureTouchProbe && (var.wizTouchProbeID == null || var.wizTouchPro
     ; applied at the next reboot.
 
     if { global.mosTM }
-        M291 P{"Measured deflection is <b>X=" ^ var.wizTouchProbeDeflection[0] ^ " Y=" ^ var.wizTouchProbeDeflection[1] ^ "</b>.<br/>This will be applied to your touch probe on reboot or reload."} R"MillenniumOS: Configuration Wizard" S2 T0
+        M291 P{ "Measured deflection is <b>X=" ^ var.wizTouchProbeDeflection[0] ^ " Y=" ^ var.wizTouchProbeDeflection[1] ^ "</b>.<br/>This will be applied to your touch probe on reboot or reload." } R"MillenniumOS: Configuration Wizard" S2 T0
 
     ; Switch away from the wizard touch probe.
     T-1 P0
@@ -455,82 +455,82 @@ if { var.wizFeatureTouchProbe && (var.wizTouchProbeID == null || var.wizTouchPro
     ; Park the spindle to ease the removal of the probe.
     G27 Z1
 
-    M291 P{"Please remove the touch probe now and stow it safely away from the machine. Click <b>OK</b> when stowed safely."} R{"MillenniumOS: Configuration Wizard"} S2
+    M291 P{ "Please remove the touch probe now and stow it safely away from the machine. Click <b>OK</b> when stowed safely." } R"MillenniumOS: Configuration Wizard" S2
 
     ; Remove the temporary probe tool.
-    M4001 P{global.mosPTID}
+    M4001 P{ global.mosPTID }
 
 ; Overwrite the mos-user-vars.g file with the first line
-echo >{var.wizUserVarsFile} "; mos-user-vars.g: MillenniumOS User Variables"
-echo >>{var.wizUserVarsFile} ";"
-echo >>{var.wizUserVarsFile} "; This file is automatically generated by the MOS configuration wizard."
-echo >>{var.wizUserVarsFile} "; You may edit this file directly, but it will be overwritten"
-echo >>{var.wizUserVarsFile} "; if you complete the configuration wizard again."
-echo >>{var.wizUserVarsFile} ""
+echo >{ var.wizUserVarsFile } "; mos-user-vars.g: MillenniumOS User Variables"
+echo >>{ var.wizUserVarsFile } ";"
+echo >>{ var.wizUserVarsFile } "; This file is automatically generated by the MOS configuration wizard."
+echo >>{ var.wizUserVarsFile } "; You may edit this file directly, but it will be overwritten"
+echo >>{ var.wizUserVarsFile } "; if you complete the configuration wizard again."
+echo >>{ var.wizUserVarsFile } ""
 
-echo >>{var.wizUserVarsFile} "; Features"
-echo >>{var.wizUserVarsFile} {"set global.mosFeatTouchProbe = " ^ var.wizFeatureTouchProbe}
-echo >>{var.wizUserVarsFile} {"set global.mosFeatToolSetter = " ^ var.wizFeatureToolSetter}
-echo >>{var.wizUserVarsFile} {"set global.mosFeatSpindleFeedback = " ^ var.wizFeatureSpindleFeedback}
-echo >>{var.wizUserVarsFile} ""
+echo >>{ var.wizUserVarsFile } "; Features"
+echo >>{ var.wizUserVarsFile } { "set global.mosFeatTouchProbe = " ^ var.wizFeatureTouchProbe }
+echo >>{ var.wizUserVarsFile } { "set global.mosFeatToolSetter = " ^ var.wizFeatureToolSetter }
+echo >>{ var.wizUserVarsFile } { "set global.mosFeatSpindleFeedback = " ^ var.wizFeatureSpindleFeedback }
+echo >>{ var.wizUserVarsFile } ""
 
-echo >>{var.wizUserVarsFile} "; Modes"
-echo >>{var.wizUserVarsFile} {"set global.mosEM = " ^ var.wizExpertMode}
-echo >>{var.wizUserVarsFile} {"set global.mosTM = " ^ var.wizTutorialMode}
-echo >>{var.wizUserVarsFile} ""
+echo >>{ var.wizUserVarsFile } "; Modes"
+echo >>{ var.wizUserVarsFile } { "set global.mosEM = " ^ var.wizExpertMode }
+echo >>{ var.wizUserVarsFile } { "set global.mosTM = " ^ var.wizTutorialMode }
+echo >>{ var.wizUserVarsFile } ""
 
 if { var.wizSpindleID != null }
-    echo >>{var.wizUserVarsFile} "; Spindle ID"
-    echo >>{var.wizUserVarsFile} { "set global.mosSID = " ^ var.wizSpindleID }
+    echo >>{ var.wizUserVarsFile } "; Spindle ID"
+    echo >>{ var.wizUserVarsFile } { "set global.mosSID = " ^ var.wizSpindleID }
 
 if { var.wizTouchProbeID != null }
-    echo >>{var.wizUserVarsFile} "; Touch Probe ID"
-    echo >>{var.wizUserVarsFile} {"set global.mosTPID = " ^ var.wizTouchProbeID}
+    echo >>{ var.wizUserVarsFile } "; Touch Probe ID"
+    echo >>{ var.wizUserVarsFile } { "set global.mosTPID = " ^ var.wizTouchProbeID }
 
 if { var.wizToolSetterID != null }
-    echo >>{var.wizUserVarsFile} "; Toolsetter ID"
-    echo >>{var.wizUserVarsFile} {"set global.mosTSID = " ^ var.wizToolSetterID}
+    echo >>{ var.wizUserVarsFile } "; Toolsetter ID"
+    echo >>{ var.wizUserVarsFile } { "set global.mosTSID = " ^ var.wizToolSetterID }
 
-echo >>{var.wizUserVarsFile} ""
+echo >>{ var.wizUserVarsFile } ""
 
 if { var.wizSpindleAccelSec != null }
-    echo >>{var.wizUserVarsFile} "; Spindle Acceleration Sec"
-    echo >>{var.wizUserVarsFile} {"set global.mosSAS = " ^ var.wizSpindleAccelSec}
+    echo >>{ var.wizUserVarsFile } "; Spindle Acceleration Sec"
+    echo >>{ var.wizUserVarsFile } { "set global.mosSAS = " ^ var.wizSpindleAccelSec }
 if { var.wizSpindleDecelSec != null }
-    echo >>{var.wizUserVarsFile} "; Spindle Deceleration Sec"
-    echo >>{var.wizUserVarsFile} {"set global.mosSDS = " ^ var.wizSpindleDecelSec}
+    echo >>{ var.wizUserVarsFile } "; Spindle Deceleration Sec"
+    echo >>{ var.wizUserVarsFile } { "set global.mosSDS = " ^ var.wizSpindleDecelSec }
 
-echo >>{var.wizUserVarsFile} ""
+echo >>{ var.wizUserVarsFile } ""
 
 if { var.wizToolSetterPos != null }
-    echo >>{var.wizUserVarsFile} "; Toolsetter Position"
-    echo >>{var.wizUserVarsFile} {"set global.mosTSP = " ^ var.wizToolSetterPos }
+    echo >>{ var.wizUserVarsFile } "; Toolsetter Position"
+    echo >>{ var.wizUserVarsFile } { "set global.mosTSP = " ^ var.wizToolSetterPos }
 
 if { var.wizTouchProbeReferencePos != null }
-    echo >>{var.wizUserVarsFile} "; Touch Probe Reference Position"
-    echo >>{var.wizUserVarsFile} {"set global.mosTPRP = " ^ var.wizTouchProbeReferencePos }
+    echo >>{ var.wizUserVarsFile } "; Touch Probe Reference Position"
+    echo >>{ var.wizUserVarsFile } { "set global.mosTPRP = " ^ var.wizTouchProbeReferencePos }
 
-echo >>{var.wizUserVarsFile} ""
+echo >>{ var.wizUserVarsFile } ""
 
 if { var.wizTouchProbeRadius != null }
-    echo >>{var.wizUserVarsFile} "; Touch Probe Radius"
-    echo >>{var.wizUserVarsFile} {"set global.mosTPR = " ^ var.wizTouchProbeRadius }
+    echo >>{ var.wizUserVarsFile } "; Touch Probe Radius"
+    echo >>{ var.wizUserVarsFile } { "set global.mosTPR = " ^ var.wizTouchProbeRadius }
 if { var.wizTouchProbeDeflection != null }
-    echo >>{var.wizUserVarsFile} "; Touch Probe Deflection"
-    echo >>{var.wizUserVarsFile} {"set global.mosTPD = " ^ var.wizTouchProbeDeflection }
+    echo >>{ var.wizUserVarsFile } "; Touch Probe Deflection"
+    echo >>{ var.wizUserVarsFile } { "set global.mosTPD = " ^ var.wizTouchProbeDeflection }
 
 if { var.wizDatumToolRadius != null }
-    echo >>{var.wizUserVarsFile} "; Datum Tool Radius"
-    echo >>{var.wizUserVarsFile} {"set global.mosDTR = " ^ var.wizDatumToolRadius }
+    echo >>{ var.wizUserVarsFile } "; Datum Tool Radius"
+    echo >>{ var.wizUserVarsFile } { "set global.mosDTR = " ^ var.wizDatumToolRadius }
 
 if { var.wizProtectedMoveBackOff != null }
-    echo >>{var.wizUserVarsFile} "; Protected Move Back-Off"
-    echo >>{var.wizUserVarsFile} {"set global.mosPMBO = " ^ var.wizProtectedMoveBackOff }
+    echo >>{ var.wizUserVarsFile } "; Protected Move Back-Off"
+    echo >>{ var.wizUserVarsFile } { "set global.mosPMBO = " ^ var.wizProtectedMoveBackOff }
 
 if { global.mosLdd }
-    M291 P{"Configuration wizard complete. Your configuration has been saved to " ^ var.wizUserVarsFile ^ ". Press OK to reload!"} R"MillenniumOS: Configuration Wizard" S2 T0
+    M291 P{ "Configuration wizard complete. Your configuration has been saved to " ^ var.wizUserVarsFile ^ ". Press OK to reload!" } R"MillenniumOS: Configuration Wizard" S2 T0
     M9999
 else
-    M291 P{"Configuration wizard complete. Your configuration has been saved to " ^ var.wizUserVarsFile ^ ". Press OK to reboot!"} R"MillenniumOS: Configuration Wizard" S2 T0
-    echo { "MillenniumOS: Rebooting..."}
+    M291 P{ "Configuration wizard complete. Your configuration has been saved to " ^ var.wizUserVarsFile ^ ". Press OK to reboot!" } R"MillenniumOS: Configuration Wizard" S2 T0
+    echo "MillenniumOS: Rebooting..."
     M999

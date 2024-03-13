@@ -5,6 +5,6 @@ if { global.mosTM }
     if { result == -1 }
         M99
 
-set global.mosEM = {!global.mosEM}
+set global.mosEM = { !global.mosEM }
 
-echo {"MillenniumOS: Expert Mode " ^ (global.mosEM ? "Enabled" : "Disabled")}
+echo { "Expert Mode " ^ (global.mosEM ? "Enabled" : "Disabled") }

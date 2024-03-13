@@ -4,9 +4,9 @@
 ;
 ; G6512
 ;    I<optional-probe-id>
-;    {X,Y,Z}<one-or-more-target-coord>
+;    { X,Y,Z }<one-or-more-target-coord>
 ;    L<start-coord-z>
-;    {J,K}<optional-start-coord-xy>
+;    { J,K }<optional-start-coord-xy>
 ;
 ; Implements manual or automated probing of a surface from
 ; a given position towards a target position.
@@ -29,7 +29,7 @@
 ;
 ; All co-ordinates are absolute machine co-ordinates!
 ; Examples:
-;   G6512 I1 L{move.axes[2].max} Z{move.axes[2].min} -
+;   G6512 I1 L{ move.axes[2].max } Z{ move.axes[2].min } -
 ;     Probe at current X/Y machine position, Z=max towards
 ;     Z=min using probe 1. This might be used for probing
 ;     tool offset using the toolsetter.
@@ -100,7 +100,7 @@ if { !exists(param.L) }
     abort { "G6512: Must provide Z height to begin probing at (L..)!" }
 
 if { state.currentTool >= #tools || state.currentTool < 0 }
-    abort { "G6512: No tool selected, or MillenniumOS tool table is invalid. Select a probe tool before probing."}
+    abort { "G6512: No tool selected, or MillenniumOS tool table is invalid. Select a probe tool before probing." }
 
 var sZ = { param.L }
 
@@ -171,7 +171,7 @@ M400
 ; which is deemed to be the same for each X/Y axis.
 ; TODO: Is this a safe assumption?
 ; Commented due to memory limitations
-; M7500 S{"Compensating for Tool # " ^ state.currentTool ^ " R=" ^ global.mosTT[state.currentTool][0] ^ " dX=" ^ global.mosTT[state.currentTool][1][0] ^ " dY=" ^ global.mosTT[state.currentTool][1][1]}
+; M7500 S{ "Compensating for Tool # " ^ state.currentTool ^ " R=" ^ global.mosTT[state.currentTool][0] ^ " dX=" ^ global.mosTT[state.currentTool][1][0] ^ " dY=" ^ global.mosTT[state.currentTool][1][1] }
 
 ; Calculate the magnitude of the direction vector of probe movement
 var mag = { sqrt(pow(global.mosPCX - var.sX, 2) + pow(global.mosPCY - var.sY, 2)) }

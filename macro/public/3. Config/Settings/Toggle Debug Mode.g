@@ -5,6 +5,6 @@ if { ! global.mosDebug }
     if { result == -1 }
         M99
 
-set global.mosDebug = {!global.mosDebug}
+set global.mosDebug = { !global.mosDebug }
 
-echo {"MillenniumOS: Debug Mode " ^ (global.mosDebug ? "Enabled" : "Disabled")}
+echo { "Debug Mode " ^ (global.mosDebug ? "Enabled" : "Disabled") }
