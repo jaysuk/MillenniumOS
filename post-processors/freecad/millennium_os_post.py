@@ -99,8 +99,8 @@ class Control(Flag):
     NONZERO = auto()
 
 # User-configurable arguments.
-parser = argparse.ArgumentParser(prog="millennium_milo_v1.5",
-    description="Millennium Machines Milo v1.5 Post Processor for FreeCAD")
+parser = argparse.ArgumentParser(prog="MillenniumOS {}".format(RELEASE.VERSION),
+    description="MillenniumOS {} Post Processor for FreeCAD".format(RELEASE.VERSION))
 
 parser.add_argument('--show-editor', action=argparse.BooleanOptionalAction, default=True,
     help="Show Gcode in FreeCAD Editor before saving to file.")
