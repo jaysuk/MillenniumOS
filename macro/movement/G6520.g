@@ -128,4 +128,4 @@ if { global.mosTM }
     if { input != 0 }
         abort { "Vise corner probe aborted!" }
 
-G6520.1 W{var.workOffset} Q{var.mode} H{var.xSL} I{var.ySL} N{var.corner} T{var.clearance} O{var.overtravel} P{var.probeDepth} J{move.axes[0].machinePosition} K{move.axes[1].machinePosition} L{move.axes[2].machinePosition}
+G6520.1 W{var.workOffset} Q{var.mode} H{var.xSL} I{var.ySL} N{var.corner} T{var.clearance} O{var.overtravel} P{var.probeDepth} J{move.axes[0].userPosition} K{move.axes[1].userPosition} L{move.axes[2].userPosition}

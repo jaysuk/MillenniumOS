@@ -56,7 +56,7 @@ if { global.mosPTID != state.currentTool }
 ; original position may have been safe with a different tool installed,
 ; the touch probe may be longer. After a tool change the spindle
 ; will be parked, so essentially our safeZ is at the parking location.
-var safeZ = { move.axes[2].machinePosition }
+var safeZ = { move.axes[2].userPosition }
 
 ; Above the corner to be probed
 ; J = start position X
@@ -70,12 +70,12 @@ var sZ   = { param.L }
 ; debug info.
 
 ; Probe the top surface of the workpiece from the current Z position
-G6510.1 R0 W{var.workOffset} H4 I{param.T} O{param.O} J{move.axes[0].machinePosition} K{move.axes[1].machinePosition} L{var.safeZ}
+G6510.1 R0 W{var.workOffset} H4 I{param.T} O{param.O} J{move.axes[0].userPosition} K{move.axes[1].userPosition} L{var.safeZ}
 if { global.mosWPSfcPos[var.workOffset] == global.mosDfltWPSfcPos || global.mosWPSfcAxis[var.workOffset] != "Z" }
     abort { "G6520: Failed to probe the top surface of the workpiece!" }
 
 ; Probe the corner surface
-G6508.1 R0 W{var.workOffset} Q{param.Q} H{param.H} I{param.I} N{param.N} T{param.T} O{param.O} J{move.axes[0].machinePosition} K{move.axes[1].machinePosition} L{ global.mosWPSfcPos[var.workOffset] - param.P }
+G6508.1 R0 W{var.workOffset} Q{param.Q} H{param.H} I{param.I} N{param.N} T{param.T} O{param.O} J{move.axes[0].userPosition} K{move.axes[1].userPosition} L{ global.mosWPSfcPos[var.workOffset] - param.P }
 if { global.mosWPCnrNum[var.workOffset] == null }
     abort { "G6520: Failed to probe the corner surface of the workpiece!" }
 

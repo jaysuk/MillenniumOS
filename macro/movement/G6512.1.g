@@ -33,7 +33,7 @@ G94
 M400
 
 ; Assume current location is start point.
-var sP = { move.axes[0].machinePosition, move.axes[1].machinePosition, move.axes[2].machinePosition }
+var sP = { move.axes[0].userPosition, move.axes[1].userPosition, move.axes[2].userPosition }
 
 ; Set target positions - if not provided, use start positions.
 ; The machine will not move in one or more axes if the target
@@ -110,7 +110,7 @@ while { iterations <= var.retries }
     M558 K{ param.I } F{ var.fineSpeed }
 
     ; Record current position into local variable
-    set var.cP = { move.axes[0].machinePosition, move.axes[1].machinePosition, move.axes[2].machinePosition }
+    set var.cP = { move.axes[0].userPosition, move.axes[1].userPosition, move.axes[2].userPosition }
 
     ; If this is the first probe, set the initial values
     if { iterations == 0 }

@@ -44,7 +44,7 @@ M5010 W{var.workOffset} R49
 ; original position may have been safe with a different tool installed,
 ; the touch probe may be longer. After a tool change the spindle
 ; will be parked, so essentially our safeZ is at the parking location.
-var safeZ = { move.axes[2].machinePosition }
+var safeZ = { move.axes[2].userPosition }
 
 ; J = start position X
 ; K = start position Y

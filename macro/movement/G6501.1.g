@@ -113,7 +113,7 @@ set var.dirXY[2][1] = { var.sX + (var.cR - var.overtravel)*cos(var.angle*2), var
 ; Boss edge co-ordinates for 3 probed points
 var pXY  = { null, null, null }
 
-var safeZ = { move.axes[2].machinePosition }
+var safeZ = { move.axes[2].userPosition }
 
 ; Probe each of the 3 points
 while { iterations < #var.dirXY }

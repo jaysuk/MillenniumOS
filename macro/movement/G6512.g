@@ -69,8 +69,8 @@ var manualProbe = { !exists(param.I) || param.I == null }
 M400
 
 ; Default to current machine position for unset X/Y starting locations
-var sX = { (exists(param.J)) ? param.J : move.axes[0].machinePosition }
-var sY = { (exists(param.K)) ? param.K : move.axes[1].machinePosition }
+var sX = { (exists(param.J)) ? param.J : move.axes[0].userPosition }
+var sY = { (exists(param.K)) ? param.K : move.axes[1].userPosition }
 
 ; Note: We allow a safe-Z to be provided as a parameter, but default to
 ; the current Z position. The reason for this is that we cannot always
@@ -86,7 +86,7 @@ var sY = { (exists(param.K)) ? param.K : move.axes[1].machinePosition }
 ; a block), but we need to return to the safe height after the last
 ; probe to perform probing on the other surfaces.
 
-var safeZ = { exists(param.S) ? param.S : move.axes[2].machinePosition }
+var safeZ = { exists(param.S) ? param.S : move.axes[2].userPosition }
 
 if { !exists(param.X) && !exists(param.Y) && !exists(param.Z) }
     abort { "G6512: Must provide a valid target position in one or more axes (X.. Y.. Z..)!" }

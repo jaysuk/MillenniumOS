@@ -40,7 +40,7 @@ if { global.mosPTID != state.currentTool }
 ; surface
 M5010 W{var.workOffset} R8
 
-var safeZ = { move.axes[2].machinePosition }
+var safeZ = { move.axes[2].userPosition }
 
 ; We do not apply tool radius to overtravel, because we need overtravel for
 ; Z probes as well as X/Y. Tool radius only applies for X/Y probes.

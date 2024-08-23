@@ -22,7 +22,7 @@ G94
 M400
 
 ; Assume current location is start point.
-var sP = { move.axes[0].machinePosition, move.axes[1].machinePosition, move.axes[2].machinePosition }
+var sP = { move.axes[0].userPosition, move.axes[1].userPosition, move.axes[2].userPosition }
 
 ; Our target positions do not take probe tool radius
 ; into account on the X and Y axes. We need to account
@@ -122,9 +122,9 @@ while { true }
     M400
 
     ; Update the current position
-    set var.cP[0] = { move.axes[0].machinePosition }
-    set var.cP[1] = { move.axes[1].machinePosition }
-    set var.cP[2] = { move.axes[2].machinePosition }
+    set var.cP[0] = { move.axes[0].userPosition }
+    set var.cP[1] = { move.axes[1].userPosition }
+    set var.cP[2] = { move.axes[2].userPosition }
 
 ; Set the probe coordinates to the current position
 set global.mosPCX = { var.cP[0] }

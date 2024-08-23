@@ -84,7 +84,7 @@ var dirXY = { { var.sX + var.bR, var.sY}, { var.sX + var.bR * cos(var.angle), va
 ; Bore edge co-ordinates for 3 probed points
 var pXY  = { null, null, null }
 
-var safeZ = { move.axes[2].machinePosition }
+var safeZ = { move.axes[2].userPosition }
 
 ; Probe each of the 3 points
 while { iterations < #var.dirXY }

@@ -88,4 +88,4 @@ if { global.mosTM }
             abort { "Single Surface probe aborted!" }
 
 
-G6510.1 W{exists(param.W)? param.W : null} H{var.probeAxis} I{var.probeDist} O{var.overtravel} J{move.axes[0].machinePosition} K{move.axes[1].machinePosition} L{move.axes[2].machinePosition - var.probeDepth}
+G6510.1 W{exists(param.W)? param.W : null} H{var.probeAxis} I{var.probeDist} O{var.overtravel} J{move.axes[0].userPosition} K{move.axes[1].userPosition} L{move.axes[2].userPosition - var.probeDepth}

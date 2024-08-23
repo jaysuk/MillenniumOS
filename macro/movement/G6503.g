@@ -99,4 +99,4 @@ if { global.mosTM }
     if { input != 0 }
         abort { "Rectangle block probe aborted!" }
 
-G6503.1 W{var.workOffset} H{var.blockWidth} I{var.blockLength} T{var.clearance} O{var.overtravel} J{move.axes[0].machinePosition} K{move.axes[1].machinePosition} L{move.axes[2].machinePosition - var.probingDepth}
+G6503.1 W{var.workOffset} H{var.blockWidth} I{var.blockLength} T{var.clearance} O{var.overtravel} J{move.axes[0].userPosition} K{move.axes[1].userPosition} L{move.axes[2].userPosition - var.probingDepth}

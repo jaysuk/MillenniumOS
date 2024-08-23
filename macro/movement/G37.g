@@ -103,7 +103,7 @@ if { global.mosTT[state.currentTool][0] > global.mosTSR }
             continue
 
         ; Probe the point to see if we're activated.
-        G6512 D1 E0 I{global.mosTSID} J{var.tX} K{var.tY} L{move.axes[2].machinePosition} Z{var.pZ[0]}
+        G6512 D1 E0 I{global.mosTSID} J{var.tX} K{var.tY} L{move.axes[2].userPosition} Z{var.pZ[0]}
 
         ; Set the height to the probed point
         set var.pZ[iterations+1] = global.mosPCZ
