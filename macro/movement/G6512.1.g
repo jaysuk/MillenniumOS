@@ -87,7 +87,7 @@ while { iterations <= var.retries }
     ; activated at one probe point.
 
     if { var.errors }
-        G53 G38.2 K{ param.I } X{ var.tP[0] } Y{ var.tP[1] } Z{ var.tP[2] }
+        G38.2 K{ param.I } X{ var.tP[0] } Y{ var.tP[1] } Z{ var.tP[2] }
         ; Abort if an error was encountered
         if { result != 0 }
             ; Reset probing speed limits
@@ -101,7 +101,7 @@ while { iterations <= var.retries }
             abort { "G6512.1: Probe " ^ param.I ^ " experienced an error, aborting!" }
     else
         ; Disable errors by using G38.3
-        G53 G38.3 K{ param.I } X{ var.tP[0] } Y{ var.tP[1] } Z{ var.tP[2] }
+        G38.3 K{ param.I } X{ var.tP[0] } Y{ var.tP[1] } Z{ var.tP[2] }
 
     ; Wait for all moves in the queue to finish
     M400
@@ -110,7 +110,7 @@ while { iterations <= var.retries }
     M558 K{ param.I } F{ var.fineSpeed }
 
     ; Record current position into local variable
-    set var.cP = { move.axes[0].userPosition, move.axes[1].userPosition, move.axes[2].userPosition }
+    set var.cP = { move.axes[0].workplaceOffsets[move.workplaceNumber] + move.axes[0].userPosition, move.axes[1].workplaceOffsets[move.workplaceNumber] + move.axes[1].userPosition, move.axes[2].workplaceOffsets[move.workplaceNumber] + move.axes[2].userPosition }
 
     ; If this is the first probe, set the initial values
     if { iterations == 0 }

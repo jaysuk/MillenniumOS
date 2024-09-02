@@ -62,11 +62,8 @@ G94
 ; So just run the move as normal with our manual
 ; probing travel speed and then return.
 if { var.manualProbe }
-    G53 G1 X{ var.tPX } Y{ var.tPY } Z{ var.tPZ } F{ global.mosMPS[0] }
+    G1 X{ var.tPX } Y{ var.tPY } Z{ var.tPZ } F{ global.mosMPS[0] }
     M99
-
-; Commented due to memory limitations
-; M7500 S{"Protected move to X=" ^ var.tPX ^ " Y=" ^ var.tPY ^ " Z=" ^ var.tPZ ^ " from X=" ^ move.axes[0].userPosition ^ " Y=" ^ move.axes[1].userPosition ^ " Z=" ^ move.axes[2].userPosition }
 
 ; Note: these must be set as variables as we override the
 ; probe speed below. We need to reset the probe speed
@@ -113,7 +110,7 @@ if { sensors.probes[param.I].value[0] != 0 }
     ; because it is still slightly in contact with the surface.
     ; It is better to just move the backoff distance and assume that it
     ; is short enough to not damage the probe.
-    G53 G1 X{ move.axes[0].userPosition + var.tDX} Y{ move.axes[1].userPosition + var.tDY } Z{ move.axes[2].userPosition + var.tDZ } F{ var.roughSpeed }
+    G1 X{ move.axes[0].userPosition + var.tDX} Y{ move.axes[1].userPosition + var.tDY } Z{ move.axes[2].userPosition + var.tDZ } F{ var.roughSpeed }
 
     ; Wait for moves to complete
     M400
@@ -128,7 +125,7 @@ if { sensors.probes[param.I].value[0] != 0 }
 M558 K{ param.I } F{ sensors.probes[param.I].travelSpeed }
 
 ; Move to position while checking probe for activation
-G53 G38.3 K{ param.I } X{ var.tPX } Y{ var.tPY } Z{ var.tPZ }
+G38.3 K{ param.I } X{ var.tPX } Y{ var.tPY } Z{ var.tPZ }
 
 ; Wait for moves to complete
 M400
@@ -140,11 +137,11 @@ M558 K{ param.I } F{ var.roughSpeed, var.fineSpeed }
 ; check the location of the machine to determine if the move was completed.
 var tolerance = 0.01
 
-if { (move.axes[0].userPosition) < (var.tPX - var.tolerance/2) || (move.axes[0].userPosition) > (var.tPX + var.tolerance/2) }
-    abort { "G6550: Machine position does not match expected position -  X=" ^ var.tPX ^ " != " ^ move.axes[0].userPosition }
+if { (move.axes[0].userPosition) < var.tPX || (move.axes[0].userPosition) > var.tPX }
+    abort { "G6550: Current position does not match expected position -  X=" ^ var.tPX ^ " != " ^ move.axes[0].userPosition ^ " - protected move did not complete!" }
 
-if { (move.axes[1].userPosition) < (var.tPY - var.tolerance/2) || (move.axes[1].userPosition) > (var.tPY + var.tolerance/2) }
-    abort { "G6550: Machine position does not match expected position -  Y=" ^ var.tPY ^ " != " ^ move.axes[1].userPosition }
+if { (move.axes[1].userPosition) < var.tPY || (move.axes[1].userPosition) > var.tPY }
+    abort { "G6550: Current position does not match expected position -  Y=" ^ var.tPY ^ " != " ^ move.axes[1].userPosition ^ " - protected move did not complete!" }
 
-if { (move.axes[2].userPosition) < (var.tPZ - var.tolerance/2) || (move.axes[2].userPosition) > (var.tPZ + var.tolerance/2) }
-    abort { "G6550: Machine position does not match expected position -  Z=" ^ var.tPZ ^ " != " ^ move.axes[2].userPosition }
+if { (move.axes[2].userPosition) < var.tPZ || (move.axes[2].userPosition) > var.tPZ }
+    abort { "G6550: Current position does not match expected position -  Z=" ^ var.tPZ ^ " != " ^ move.axes[2].userPosition ^ " - protected move did not complete!" }
