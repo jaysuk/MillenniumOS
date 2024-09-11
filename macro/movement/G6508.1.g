@@ -52,6 +52,9 @@ if { global.mosPTID != state.currentTool }
 ; Reset corner, dimensions and rotation
 M5010 W{var.workOffset} R50
 
+; Get current machine position on Z
+M5000 P1 I2
+
 ; Store our own safe Z position as the current position. We return to
 ; this position where necessary to make moves across the workpiece to
 ; the next probe point.
@@ -59,7 +62,7 @@ M5010 W{var.workOffset} R50
 ; original position may have been safe with a different tool installed,
 ; the touch probe may be longer. After a tool change the spindle
 ; will be parked, so essentially our safeZ is at the parking location.
-var safeZ = { move.axes[2].machinePosition }
+var safeZ = { global.mosMI }
 
 ; Above the corner to be probed
 ; J = start position X
@@ -177,7 +180,7 @@ G6550 I{var.pID} Y{var.dirXY[0][0][1]}
 
 ; Run X probe 1
 G6512 D1 I{var.pID} J{var.dirXY[0][0][0]} L{var.sZ} X{var.dirXY[0][1][0]}
-set var.pX[0] = { global.mosPCX }
+set var.pX[0] = { global.mosMI[0] }
 set var.pY[0] = { var.dirXY[0][0][1] }
 
 ; Return to our starting position
@@ -185,7 +188,7 @@ G6550 I{var.pID} X{var.dirXY[0][0][0]}
 
 if { var.pMO == 0 }
     G6512 D1 I{var.pID} J{var.dirXY[2][0][0]} K{var.dirXY[2][0][1]} L{var.sZ} X{var.dirXY[2][1][0]}
-    set var.pX[2] = { global.mosPCX }
+    set var.pX[2] = { global.mosMI[0] }
     set var.pY[2] = { var.dirXY[2][0][1] }
 
     ; Return to our starting position.
@@ -204,7 +207,7 @@ G6550 I{var.pID} X{var.dirXY[1][0][0]}
 ; Run Y probes
 G6512 D1 I{var.pID} K{var.dirXY[1][0][1]} L{var.sZ} Y{var.dirXY[1][1][1]}
 set var.pX[1] = { var.dirXY[1][0][0] }
-set var.pY[1] = { global.mosPCY }
+set var.pY[1] = { global.mosMI[1] }
 
 ; Return to our starting position
 G6550 I{var.pID} Y{var.dirXY[1][0][1]}
@@ -212,7 +215,7 @@ G6550 I{var.pID} Y{var.dirXY[1][0][1]}
 if { var.pMO == 0 }
     G6512 D1 I{var.pID} J{var.dirXY[3][0][0]} K{var.dirXY[3][0][1]} L{var.sZ} Y{var.dirXY[3][1][1]}
     set var.pX[3] = { var.dirXY[3][0][0] }
-    set var.pY[3] = { global.mosPCY }
+    set var.pY[3] = { global.mosMI[1] }
 
     ; Return to our starting position
     G6550 I{var.pID} Y{var.dirXY[3][0][1]}

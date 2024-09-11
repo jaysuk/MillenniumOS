@@ -24,6 +24,11 @@ if { exists(param.S) }
     if { param.S < 0 }
         abort { "Spindle speed for spindle #" ^ var.sID ^ " must be a positive value!" }
 
+    ; If spindle speed is above 0, make sure it is above
+    ; the minimum configured speed for the spindle.
+    if { param.S < spindles[var.sID].min && param.S > 0 }
+        abort { "Spindle speed " ^ param.S ^ " is below minimum configured speed " ^ spindles[var.sID].min ^ " on spindle #" ^ var.sID ^ "!" }
+
     if { param.S > spindles[var.sID].max }
         abort { "Spindle speed " ^ param.S ^ " exceeds maximum configured speed " ^ spindles[var.sID].max ^ " on spindle #" ^ var.sID ^ "!" }
 
@@ -53,7 +58,7 @@ if { spindles[var.sID].current == 0 }
             M25
         ; If operator picked cancel, then abort the job
         elif { input == 2 }
-            abort { "Operator paused spindle startup!" }
+            abort { "Operator aborted spindle startup!" }
 
     ; Otherwise just warn the operator and allow them to
     ; abort, if expert mode is turned off.

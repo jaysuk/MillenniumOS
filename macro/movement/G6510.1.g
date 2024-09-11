@@ -39,7 +39,10 @@ if { global.mosPTID != state.currentTool }
 ; surface
 M5010 W{var.workOffset} R8
 
-var safeZ = { move.axes[2].machinePosition }
+; Get current machine position on Z
+M5000 P1 I2
+
+var safeZ = { global.mosMI }
 
 ; We do not apply tool radius to overtravel, because we need overtravel for
 ; Z probes as well as X/Y. Tool radius only applies for X/Y probes.
@@ -81,7 +84,7 @@ var sAxis = { (var.probeAxis <= 1)? "X" : (var.probeAxis <= 3)? "Y" : "Z" }
 set global.mosWPSfcAxis[var.workOffset] = { var.sAxis }
 
 ; Set surface position on relevant axis
-set global.mosWPSfcPos[var.workOffset] = { (var.probeAxis <= 1)? global.mosPCX : (var.probeAxis <= 3)? global.mosPCY : global.mosPCZ }
+set global.mosWPSfcPos[var.workOffset] = { (var.probeAxis <= 1)? global.mosMI[0] : (var.probeAxis <= 3)? global.mosMI[1] : global.mosMI[2] }
 
 ; Report probe results if requested
 if { !exists(param.R) || param.R != 0 }

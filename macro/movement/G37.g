@@ -88,7 +88,8 @@ if { global.mosTT[state.currentTool][0] > global.mosTSR }
     ; Only probe once, this tells us the activation point at the center of the tool.
     ; Do _not_ return to the safe position. Back-off position is fine.
     G6512 D1 I{global.mosTSID} J{global.mosTSP[0]} K{global.mosTSP[1]} L{move.axes[2].max} Z{move.axes[2].min} R0
-    set var.pZ[0] = global.mosPCZ
+
+    set var.pZ[0] = global.mosMI[2]
 
     while { iterations < var.points }
         var angle = { radians(360 / var.points) * iterations }
@@ -102,18 +103,21 @@ if { global.mosTT[state.currentTool][0] > global.mosTSR }
             echo {"Probe point " ^ iterations+1 ^ " is outside of machine limits. Skipping."}
             continue
 
+        ; Get current machine position in Z
+        M5000 P1 I2
+
         ; Probe the point to see if we're activated.
-        G6512 D1 E0 I{global.mosTSID} J{var.tX} K{var.tY} L{move.axes[2].machinePosition} Z{var.pZ[0]}
+        G6512 D1 E0 I{global.mosTSID} J{var.tX} K{var.tY} L{global.mosMI} Z{var.pZ[0]}
 
         ; Set the height to the probed point
-        set var.pZ[iterations+1] = global.mosPCZ
+        set var.pZ[iterations+1] = global.mosMI[2]
 
     set var.aP = { max(var.pZ) }
 
 else
     ; Probe towards axis minimum until toolsetter is activated
     G6512 I{global.mosTSID} J{global.mosTSP[0]} K{global.mosTSP[1]} L{move.axes[2].max} Z{move.axes[2].min}
-    set var.aP = global.mosPCZ
+    set var.aP = global.mosMI[2]
 
 ; If touch probe is configured, then our position in Z is relative to
 ; the installed height of the touch probe, which we don't know. What we

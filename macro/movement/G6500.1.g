@@ -84,7 +84,10 @@ var dirXY = { { var.sX + var.bR, var.sY}, { var.sX + var.bR * cos(var.angle), va
 ; Bore edge co-ordinates for 3 probed points
 var pXY  = { null, null, null }
 
-var safeZ = { move.axes[2].machinePosition }
+; Get current machine position in Z
+M5000 P1 I2
+
+var safeZ = { global.mosMI }
 
 ; Probe each of the 3 points
 while { iterations < #var.dirXY }
@@ -95,7 +98,7 @@ while { iterations < #var.dirXY }
     G6512 D1 I{var.probeId} J{var.sX} K{var.sY} L{var.sZ} X{var.dirXY[iterations][0]} Y{var.dirXY[iterations][1]}
 
     ; Save the probed co-ordinates
-    set var.pXY[iterations] = { global.mosPCX, global.mosPCY }
+    set var.pXY[iterations] = { global.mosMI[0], global.mosMI[1] }
 
 ; Calculate the slopes, midpoints, and perpendicular bisectors
 var sM1 = { (var.pXY[1][1] - var.pXY[0][1]) / (var.pXY[1][0] - var.pXY[0][0]) }
